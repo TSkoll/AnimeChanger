@@ -10,6 +10,5 @@ namespace AnimeChanger
     {
         public string ProcessName { get; set; }
         public string RemoveBrowserTitle { get; set; }
-        public Action method { get; set; } 
     }
 }
