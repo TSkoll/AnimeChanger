@@ -15,17 +15,26 @@ namespace AnimeChanger
 {
     public partial class Form1 : Form
     {
-        private Browser[] SupportedBrowsers =
+        /// <summary>
+        /// List of supported browsers.
+        /// </summary>
+        public Browser[] SupportedBrowsers =
         {
-            new Browser { ProcessName = "chrome", RemoveBrowserTitle = " - Google Chrome", method = HandleChrome},
-            new Browser { ProcessName = "firefox", RemoveBrowserTitle = " - Mozilla Firefox", method = null },
-            new Browser { ProcessName = "waterfox", RemoveBrowserTitle = " - Waterfox",  method = null },
-            new Browser { ProcessName = "firefoxdeveloperedition", RemoveBrowserTitle = " - Firefox Developer Edition", method = null }
+            new Browser { ProcessName = "chrome", RemoveBrowserTitle = " - Google Chrome" },
+            new Browser { ProcessName = "firefox", RemoveBrowserTitle = " - Mozilla Firefox" },
+            new Browser { ProcessName = "waterfox", RemoveBrowserTitle = " - Waterfox" },
+            new Browser { ProcessName = "firefox developer edition", RemoveBrowserTitle = " - Firefox Developer Edition" }
         };
 
-        List<Website> WebCache = new List<Website>();
-        Browser foundBrowser = null;
+        /// <summary>
+        /// Last found title
+        /// </summary>
         string lastTitle = null;
+
+        /// <summary>
+        /// List of AnimeChanger.Website(s) loaded to memory.
+        /// </summary>
+        List<Website> WebCache = new List<Website>();
 
         public Form1()
         {
@@ -41,45 +50,90 @@ namespace AnimeChanger
         }
 
         #region Discord.Net
+
+        /// <summary>
+        /// Starts Discord.DiscordClient, logs in and starts the check loop.
+        /// </summary>
         public void StartClient()
         {
-            //Thread DiscordThread = new Thread(() => {
-            //    System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
+            Thread DiscordThread = new Thread(() =>
+            {
+                System.Timers.Timer CheckTimer = new System.Timers.Timer(30000);
 
-            //    DiscordClient Client = new DiscordClient();
+                //DiscordClient Client = new DiscordClient();
 
-            //    Client.Ready += (s, e) =>
-            //    {
-            //        firstRun();
-            //        CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
-            //        CheckTimer.Start();
-            //    };
+                //Client.Ready += (s, e) =>
+                //{
+                //    CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
+                //    CheckTimer.Start();
+                //};
 
-            //    Client.ExecuteAndWait(async () =>
-            //    {
-            //        await Client.Connect(Secrets.email, Secrets.password);
-            //    });
-            //});
-            //DiscordThread.Name = "Spaghetti";
-            //DiscordThread.Start();
+                //Client.ExecuteAndWait(async () =>
+                //{
+                //    await Client.Connect(Secrets.email, Secrets.password);
+                //});
+
+                CheckTimer.Elapsed += (s, e) => TimerCheck(null);
+                CheckTimer.Start();
+            });
+            DiscordThread.Name = "Spaghetti";
+            DiscordThread.Start();
         }
         #endregion
 
         #region idk
-        public Browser GetBrowser()
+        #region Process stuff
+        /// <summary>
+        /// Returns one single process of (first) keyword match found.
+        /// </summary>
+        /// <param name="Processes">System.Tuple of Browser and Process, browser processes currently running.</param>
+        /// <returns>System.Tuple of Browser, Process, Website; Everything you can gather from scraping a thread.</returns>
+        public Tuple<Browser, Process, Website> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
+        {
+            foreach (var pair in Processes)
+            {
+                foreach (var w in WebCache)
+                {
+                    if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
+                        return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
+                }
+            }
+            return null;
+        } 
+
+        /// <summary>
+        /// Gets browser processes running currently on the system
+        /// </summary>
+        /// <returns>An array of System.Tuple of Browser and Process, every browser process running on the system</returns>
+        public Tuple<Browser, Process>[] GetBrowserProcesses()
         {
             Process[] processes = Process.GetProcesses();
+
+            List<Tuple<Browser, Process>> ret = new List<Tuple<Browser, Process>>();
+
             foreach (var b in SupportedBrowsers)
             {
                 foreach (var p in processes)
                 {
                     if (p.ProcessName.Contains(b.ProcessName))
-                        return b;
+                        ret.Add(new Tuple<Browser, Process>(b, p));
                 }
             }
-            return null;
-        }
 
+            if (ret.Count != 0)
+                return ret.ToArray();
+            else
+                return null;
+        }
+        #endregion
+
+        /// <summary>
+        /// Removes everything unnecessary from browser window title
+        /// </summary>
+        /// <param name="fullTitle">Full title of the browser window</param>
+        /// <param name="usedBrowser">AnimeChanger.Browser, browser thread where the title was gathered</param>
+        /// <param name="usedSite">AnimeChanger.Website, website where the anime is being watched</param>
+        /// <returns>System.String, parsed string</returns>
         public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
         {
             var retString = fullTitle.Replace(usedBrowser.RemoveBrowserTitle, "");
@@ -92,42 +146,27 @@ namespace AnimeChanger
         }
         #endregion
 
-        #region BrowserHandling
-        public static void HandleChrome()
-        {
-            var p = GetProcess("chrome");
-
-        }
-        #endregion
-
-        #region Browser peeking
-        private static Process GetProcess(string processName)
-        {
-            Process retProcess = null;
-
-            Process[] processes = Process.GetProcessesByName(processName);
-            foreach (Process p in processes)
-            {
-                if (!string.IsNullOrWhiteSpace(p.MainWindowTitle))
-                {
-                    retProcess = p;
-                    break;
-                }
-            }
-
-            return retProcess;
-        }
-        #endregion
-
         #region Other
-        internal void firstRun()
-        {
-            foundBrowser = GetBrowser();
-        }
-
+        /// <summary>
+        /// Main timer loop
+        /// </summary>
+        /// <param name="client">Discord.DiscordClient, used to assign the status</param>
         internal void TimerCheck(DiscordClient client)
-        { 
+        {
+            var BrowserProcesses = GetBrowserProcesses();
+            var rightProcess = GetKeywordProcess(BrowserProcesses);
 
+            var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
+
+            //if (title != lastTitle)
+            //    client.SetGame(new Game(title));
+
+            if (title != lastTitle)
+                MessageBox.Show(title);
+            else
+                MessageBox.Show("Last title!");
+
+            lastTitle = title;
         }
         #endregion
     }
