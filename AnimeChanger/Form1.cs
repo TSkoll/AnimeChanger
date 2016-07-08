@@ -20,7 +20,7 @@ namespace AnimeChanger
             new Browser { ProcessName = "chrome", RemoveBrowserTitle = " - Google Chrome", method = HandleChrome},
             new Browser { ProcessName = "firefox", RemoveBrowserTitle = " - Mozilla Firefox", method = null },
             new Browser { ProcessName = "waterfox", RemoveBrowserTitle = " - Waterfox",  method = null },
-            new Browser { ProcessName = "firefoxdeveloperedition", RemoveBrowserTitle = " - Firefox Developer Edition", method = null }
+            new Browser { ProcessName = "firefox developer edition", RemoveBrowserTitle = " - Firefox Developer Edition", method = null }
         };
 
         List<Website> WebCache = new List<Website>();
@@ -66,18 +66,19 @@ namespace AnimeChanger
         #endregion
 
         #region idk
-        public Browser GetBrowser()
+        public Process[] GetBrowserProcesses()
         {
+            List<Process> matches = new List<Process>();
             Process[] processes = Process.GetProcesses();
             foreach (var b in SupportedBrowsers)
             {
                 foreach (var p in processes)
                 {
                     if (p.ProcessName.Contains(b.ProcessName))
-                        return b;
+                        matches.Add(p);
                 }
             }
-            return null;
+            return matches.ToArray();
         }
 
         public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
