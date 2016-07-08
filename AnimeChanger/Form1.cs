@@ -20,7 +20,7 @@ namespace AnimeChanger
             new Browser { ProcessName = "chrome", RemoveBrowserTitle = " - Google Chrome", method = HandleChrome},
             new Browser { ProcessName = "firefox", RemoveBrowserTitle = " - Mozilla Firefox", method = null },
             new Browser { ProcessName = "waterfox", RemoveBrowserTitle = " - Waterfox",  method = null },
-            new Browser { ProcessName = "firefoxdeveloperedition", RemoveBrowserTitle = "Arstigr should fix this", method = null }
+            new Browser { ProcessName = "firefoxdeveloperedition", RemoveBrowserTitle = " - Firefox Developer Edition", method = null }
         };
 
         List<Website> WebCache = new List<Website>();
@@ -62,8 +62,6 @@ namespace AnimeChanger
             //});
             //DiscordThread.Name = "Spaghetti";
             //DiscordThread.Start();
-
-            MessageBox.Show(RemoveWebString(GetProcess("waterfox").MainWindowTitle, SupportedBrowsers[2], WebCache[0]));
         }
         #endregion
 
