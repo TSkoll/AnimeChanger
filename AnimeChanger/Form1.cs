@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
-using System.Timers;
 using Discord;
 
 namespace AnimeChanger
@@ -60,21 +54,19 @@ namespace AnimeChanger
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(30000);
 
-                //DiscordClient Client = new DiscordClient();
+                DiscordClient Client = new DiscordClient();
 
-                //Client.Ready += (s, e) =>
-                //{
-                //    CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
-                //    CheckTimer.Start();
-                //};
+                Client.Ready += (s, e) =>
+                {
+                    ChangeStatusLabel("Logged in");
+                    CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
+                    CheckTimer.Start();
+                };
 
-                //Client.ExecuteAndWait(async () =>
-                //{
-                //    await Client.Connect(Secrets.email, Secrets.password);
-                //});
-
-                CheckTimer.Elapsed += (s, e) => TimerCheck(null);
-                CheckTimer.Start();
+                Client.ExecuteAndWait(async () =>
+                {
+                    await Client.Connect(Secrets.email, Secrets.password);
+                });
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -154,19 +146,48 @@ namespace AnimeChanger
         internal void TimerCheck(DiscordClient client)
         {
             var BrowserProcesses = GetBrowserProcesses();
+
+            if (BrowserProcesses == null)
+                return;
+
             var rightProcess = GetKeywordProcess(BrowserProcesses);
+
+            if (rightProcess == null)
+                return;
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
 
-            //if (title != lastTitle)
-            //    client.SetGame(new Game(title));
+            if (title == null)
+                return;
 
             if (title != lastTitle)
-                MessageBox.Show(title);
-            else
-                MessageBox.Show("Last title!");
+            {
+                client.SetGame(new Game(title));
+                ChangeTextboxText(title);
+            }
+
+            //if (title != lastTitle)
+            //    MessageBox.Show(title);
+            //else
+            //    MessageBox.Show("Last title!");
 
             lastTitle = title;
+        }
+        #endregion
+
+        #region Cross Thread Talking
+        internal void ChangeTextboxText(string text)
+        {
+            TitleBox.Invoke((MethodInvoker)delegate {
+                TitleBox.Text = text;
+            });
+        }
+
+        internal void ChangeStatusLabel(string text)
+        {
+            StatusLabel.Invoke((MethodInvoker)delegate {
+                StatusLabel.Text = text;
+            });
         }
         #endregion
     }
