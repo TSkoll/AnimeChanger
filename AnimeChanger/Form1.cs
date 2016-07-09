@@ -14,10 +14,9 @@ namespace AnimeChanger
         /// </summary>
         public Browser[] SupportedBrowsers =
         {
-            new Browser { ProcessName = "chrome", RemoveBrowserTitle = " - Google Chrome" },
-            new Browser { ProcessName = "firefox", RemoveBrowserTitle = " - Mozilla Firefox" },
-            new Browser { ProcessName = "waterfox", RemoveBrowserTitle = " - Waterfox" },
-            new Browser { ProcessName = "firefox developer edition", RemoveBrowserTitle = " - Firefox Developer Edition" }
+            new Browser { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } },
+            new Browser { ProcessName = "firefox", RemoveBrowserTitles = new string[] { " - Mozilla Firefox", " - Firefox Developer Edition" } },
+            new Browser { ProcessName = "waterfox", RemoveBrowserTitles = new string[] { " - Waterfox" } },
         };
 
         /// <summary>
@@ -134,7 +133,11 @@ namespace AnimeChanger
         /// <returns>System.String, parsed string</returns>
         public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
         {
-            var retString = fullTitle.Replace(usedBrowser.RemoveBrowserTitle, "");
+            var retString = fullTitle;
+            foreach (string s in usedBrowser.RemoveBrowserTitles)
+            {
+                retString = retString.Replace(s, "");
+            }
             
             foreach (string filter in usedSite.RemoveStrings)
             {

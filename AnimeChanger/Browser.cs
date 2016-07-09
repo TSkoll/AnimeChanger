@@ -9,6 +9,6 @@ namespace AnimeChanger
     public class Browser
     {
         public string ProcessName { get; set; }
-        public string RemoveBrowserTitle { get; set; }
+        public string[] RemoveBrowserTitles { get; set; }
     }
 }
