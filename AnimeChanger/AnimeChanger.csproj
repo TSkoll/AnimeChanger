@@ -75,6 +75,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ani\ReadXML.cs" />
+    <Compile Include="Ani\FilterTypes\Types.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
