@@ -13,7 +13,7 @@ namespace AnimeChanger.Ani
     /*  <Root>
      *      <GlobalFilters>
      *          <Filter Type="Whitelist" Keyword="Keyword">Filterword</Filter>
-     *          <Filter>Filterword</Filter>
+     *          <Filter Type="">Filterword</Filter>
      *      </GlobalFilters>
      *      <WebsiteFilters>
      *          <Website Keyword="Keyword">
@@ -30,7 +30,7 @@ namespace AnimeChanger.Ani
                                
         //                          Global or website
         //                                 \/
-        internal static IEnumerable<Tuple<bool, TypeInt, object>> ReadXML()
+        internal static IEnumerable<Tuple<string, int, object>> ReadXML()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
@@ -41,7 +41,10 @@ namespace AnimeChanger.Ani
             XmlNode GlobalFilters = root.SelectSingleNode("GlobalFilters");
             foreach (XmlNode node in GlobalFilters.ChildNodes)
             {
+                var TypeInt = FilterController.GetFilterType(node.Attributes["Type"].InnerText);
 
+
+                yield return new Tuple<string, int, object>(null, TypeInt, null);
             }
 
 
