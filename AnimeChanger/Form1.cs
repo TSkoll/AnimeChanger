@@ -30,6 +30,17 @@ namespace AnimeChanger
         /// </summary>
         List<Website> WebCache = new List<Website>();
 
+
+        /// <summary>
+        /// Used for disconnecting from main thread.
+        /// </summary>
+        DiscordClient clientMirror;
+
+        /// <summary>
+        /// Thread that DiscordClient runs on.
+        /// </summary>
+        Thread DiscordThread;
+
         public Form1()
         {
             InitializeComponent();
@@ -39,8 +50,6 @@ namespace AnimeChanger
             {
                 WebCache.Add(w);
             }
-
-            StartClient();
         }
 
         #region Discord.Net
@@ -50,7 +59,7 @@ namespace AnimeChanger
         /// </summary>
         public void StartClient()
         {
-            Thread DiscordThread = new Thread(() =>
+            DiscordThread = new Thread(() =>
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(30000);
 
@@ -58,6 +67,8 @@ namespace AnimeChanger
 
                 Client.Ready += (s, e) =>
                 {
+                    clientMirror = Client;
+
                     ChangeStatusLabel("Logged in");
                     CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
                     CheckTimer.Start();
@@ -67,6 +78,8 @@ namespace AnimeChanger
                 {
                     await Client.Connect(Secrets.email, Secrets.password);
                 });
+
+                return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -166,11 +179,6 @@ namespace AnimeChanger
                 ChangeTextboxText(title);
             }
 
-            //if (title != lastTitle)
-            //    MessageBox.Show(title);
-            //else
-            //    MessageBox.Show("Last title!");
-
             lastTitle = title;
         }
         #endregion
@@ -188,6 +196,27 @@ namespace AnimeChanger
             StatusLabel.Invoke((MethodInvoker)delegate {
                 StatusLabel.Text = text;
             });
+        }
+        #endregion
+
+        #region Events
+        private void RefreshBtn_Click(object sender, EventArgs e)
+        {
+            WebCache.Clear();
+            foreach (Website w in Misc.ReadXML())
+            {
+                WebCache.Add(w);
+            }
+        }
+
+        private void LoginBtn_Click(object sender, EventArgs e)
+        {
+            StartClient();
+        }
+
+        private void Client_Closing(object sender, FormClosingEventArgs e)
+        {
+            clientMirror.Disconnect();
         }
         #endregion
     }
