@@ -29,7 +29,6 @@ namespace AnimeChanger
         /// </summary>
         List<Website> WebCache = new List<Website>();
 
-
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
