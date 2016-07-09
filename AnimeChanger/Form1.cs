@@ -69,6 +69,7 @@ namespace AnimeChanger
                 Client.ExecuteAndWait(async () =>
                 {
                     await Client.Connect(Secrets.email, Secrets.password);
+                    TimerCheck();
                 });
 
                 return; // This should only run after Client.ExecuteAndWait fails/ends
@@ -141,8 +142,10 @@ namespace AnimeChanger
             
             foreach (string filter in usedSite.RemoveStrings)
             {
-                retString = retString.Replace(filter, "");
+                retString = retString.Replace(filter, "╚");
             }
+
+            retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
             return retString;
         }
         #endregion
