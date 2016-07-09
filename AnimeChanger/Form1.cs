@@ -34,12 +34,7 @@ namespace AnimeChanger
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
-        DiscordClient clientMirror;
-
-        /// <summary>
-        /// Thread that DiscordClient runs on.
-        /// </summary>
-        Thread DiscordThread;
+        DiscordClient Client;
 
         public Form1()
         {
@@ -59,18 +54,16 @@ namespace AnimeChanger
         /// </summary>
         public void StartClient()
         {
-            DiscordThread = new Thread(() =>
+            Thread DiscordThread = new Thread(() =>
             {
-                System.Timers.Timer CheckTimer = new System.Timers.Timer(30000);
+                System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
 
-                DiscordClient Client = new DiscordClient();
+                Client = new DiscordClient();
 
                 Client.Ready += (s, e) =>
                 {
-                    clientMirror = Client;
-
                     ChangeStatusLabel("Logged in");
-                    CheckTimer.Elapsed += (s1, e1) => TimerCheck(Client);
+                    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
                     CheckTimer.Start();
                 };
 
@@ -156,7 +149,7 @@ namespace AnimeChanger
         /// Main timer loop
         /// </summary>
         /// <param name="client">Discord.DiscordClient, used to assign the status</param>
-        internal void TimerCheck(DiscordClient client)
+        internal void TimerCheck()
         {
             var BrowserProcesses = GetBrowserProcesses();
 
@@ -175,7 +168,7 @@ namespace AnimeChanger
 
             if (title != lastTitle)
             {
-                client.SetGame(new Game(title));
+                Client.SetGame(new Game(title));
                 ChangeTextboxText(title);
             }
 
@@ -216,7 +209,7 @@ namespace AnimeChanger
 
         private void Client_Closing(object sender, FormClosingEventArgs e)
         {
-            clientMirror.Disconnect();
+            Client.Disconnect();
         }
         #endregion
     }
