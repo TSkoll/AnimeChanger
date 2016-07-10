@@ -43,7 +43,6 @@ namespace AnimeChanger.Ani
             {
                 var TypeInt = FilterController.GetFilterType(node.Attributes["Type"].InnerText);
 
-
                 yield return new Tuple<string, int, object>(null, TypeInt, null);
             }
 
