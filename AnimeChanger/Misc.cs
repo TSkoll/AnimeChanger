@@ -105,11 +105,13 @@ namespace AnimeChanger
         internal static void WriteSecrets(Secrets secrets)
         {
             byte[] lol = { 0 };
-            secrets.email = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.email), lol, DataProtectionScope.CurrentUser));
-            secrets.password = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.password), lol, DataProtectionScope.CurrentUser));
+            Secrets to_write = new Secrets();
+
+            to_write.email = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.email), lol, DataProtectionScope.CurrentUser));
+            to_write.password = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.password), lol, DataProtectionScope.CurrentUser));
             System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Secrets));
             StreamWriter wfile = new StreamWriter(Path.Combine(FolderPath, "secrets.xml"));
-            writer.Serialize(wfile, secrets);
+            writer.Serialize(wfile, to_write);
         }
     }
 }
