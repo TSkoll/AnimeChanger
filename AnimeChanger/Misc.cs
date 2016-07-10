@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
@@ -53,7 +51,6 @@ namespace AnimeChanger
                 File.WriteAllText(Path.Combine(FolderPath, "ani.xml"), "<root> \n </root>");
             }
         }
-
 
         internal static IEnumerable<Website> ReadXML()
         {

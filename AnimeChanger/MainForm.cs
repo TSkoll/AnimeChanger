@@ -48,7 +48,6 @@ namespace AnimeChanger
         }
 
         #region Discord.Net
-
         /// <summary>
         /// Starts Discord.DiscordClient, logs in and starts the check loop.
         /// </summary>
@@ -81,7 +80,7 @@ namespace AnimeChanger
         }
         #endregion
 
-        #region idk
+        #region Browser handling
         #region Process stuff
         /// <summary>
         /// Returns one single process of (first) keyword match found.
