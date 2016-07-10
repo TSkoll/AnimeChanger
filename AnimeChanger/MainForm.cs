@@ -52,8 +52,9 @@ namespace AnimeChanger
         /// <summary>
         /// Starts Discord.DiscordClient, logs in and starts the check loop.
         /// </summary>
-        public void StartClient(Secrets sec)
+        public void StartClient(Secrets secrets)
         {
+            Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
@@ -229,7 +230,8 @@ namespace AnimeChanger
 
         private void Client_Closing(object sender, FormClosingEventArgs e)
         {
-            Client.Disconnect();
+            if (Client != null)
+                Client.Disconnect();
         }
         #endregion
     }
