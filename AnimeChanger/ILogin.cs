@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AnimeChanger
 {
-    public class Browser
+    public interface ILogin
     {
-        public string ProcessName { get; set; }
-        public string[] RemoveBrowserTitles { get; set; }
+        void PassSecrets(Secrets secrets);
     }
 }

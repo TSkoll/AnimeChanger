@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.IO;
 using Discord;
 
 namespace AnimeChanger
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form, ILogin
     {
         /// <summary>
         /// List of supported browsers.
@@ -35,7 +36,7 @@ namespace AnimeChanger
         /// </summary>
         DiscordClient Client;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -51,8 +52,9 @@ namespace AnimeChanger
         /// <summary>
         /// Starts Discord.DiscordClient, logs in and starts the check loop.
         /// </summary>
-        public void StartClient()
+        public void StartClient(Secrets secrets)
         {
+            Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
@@ -68,7 +70,7 @@ namespace AnimeChanger
 
                 Client.ExecuteAndWait(async () =>
                 {
-                    await Client.Connect(Secrets.email, Secrets.password);
+                    await Client.Connect(sec.email, sec.password);
                     TimerCheck();
                 });
 
@@ -148,6 +150,11 @@ namespace AnimeChanger
             retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
             return retString;
         }
+
+        public void PassSecrets(Secrets sec)
+        {
+            StartClient(sec);
+        }
         #endregion
 
         #region Other
@@ -210,12 +217,21 @@ namespace AnimeChanger
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-            StartClient();
+            if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+            {            
+                LoginForm login = new LoginForm(this);
+                login.Show();
+            }
+            else
+            {
+                StartClient(Misc.ReadSecrets());
+            }
         }
 
         private void Client_Closing(object sender, FormClosingEventArgs e)
         {
-            Client.Disconnect();
+            if (Client != null)
+                Client.Disconnect();
         }
         #endregion
     }
