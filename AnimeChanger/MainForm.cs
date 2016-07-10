@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.IO;
 using Discord;
 
 namespace AnimeChanger
 {
     public partial class MainForm : Form, ILogin
     {
-        /// <summary>
-        /// Login information.
-        /// </summary>
-        public Secrets secrets { get; set; }
-
         /// <summary>
         /// List of supported browsers.
         /// </summary>
@@ -154,9 +150,9 @@ namespace AnimeChanger
             return retString;
         }
 
-        public void PassSecrets()
+        public void PassSecrets(Secrets sec)
         {
-            StartClient(secrets);
+            StartClient(sec);
         }
         #endregion
 
@@ -220,9 +216,15 @@ namespace AnimeChanger
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-            this.secrets = new Secrets();
-            LoginForm login = new LoginForm(this);
-            login.Show();
+            if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+            {            
+                LoginForm login = new LoginForm(this);
+                login.Show();
+            }
+            else
+            {
+                StartClient(Misc.ReadSecrets());
+            }
         }
 
         private void Client_Closing(object sender, FormClosingEventArgs e)

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
-
+using System.Security.Cryptography;
 
 /* <root>
  *  <website keyword="crunchyroll">
@@ -79,6 +79,26 @@ namespace AnimeChanger
                 w.RemoveStrings = filters.ToArray();
                 yield return w;
             }
+        }
+
+        internal static Secrets ReadSecrets()
+        {
+            Secrets ret = new Secrets();
+            XmlDocument secrets = new XmlDocument();
+            secrets.Load(Path.Combine(FolderPath, "secrets.xml"));
+
+            XmlNode root = secrets.SelectSingleNode("root");
+            ret.email = root.FirstChild.Value;
+            ret.password = root.LastChild.Value;
+            return ret;
+        }
+
+        internal static void WriteSecrets(Secrets secrets)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Path.Combine(FolderPath, "secrets.xml"));
+
+            // encrypt and write using System.Cryptography.ProtectedData
         }
     }
 }

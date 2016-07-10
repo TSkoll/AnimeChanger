@@ -8,7 +8,6 @@ namespace AnimeChanger
 {
     public interface ILogin
     {
-        Secrets secrets { get; set; }
-        void PassSecrets();
+        void PassSecrets(Secrets secrets);
     }
 }

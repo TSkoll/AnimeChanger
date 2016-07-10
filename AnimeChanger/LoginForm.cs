@@ -26,7 +26,11 @@ namespace AnimeChanger
         {
             this.secrets.email = tboxEmail.Text;
             this.secrets.password = tboxPassword.Text;
-            this.CallingControl.PassSecrets();
+            if (chboxRemember.Checked)
+            {
+                Misc.WriteSecrets(secrets);
+            }
+            this.CallingControl.PassSecrets(secrets);
             this.Close();
         }
     }
