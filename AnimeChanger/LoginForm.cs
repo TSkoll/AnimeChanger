@@ -18,11 +18,11 @@ namespace AnimeChanger
             Secrets secrets = new Secrets();
             secrets.email = tboxEmail.Text;
             secrets.password = tboxPassword.Text;
-            this.CallingControl.PassSecrets(secrets);
             if (chboxRemember.Checked)
             {
                 Misc.WriteSecrets(secrets);
             }
+            this.CallingControl.PassSecrets(secrets);
             this.Close();
         }
     }

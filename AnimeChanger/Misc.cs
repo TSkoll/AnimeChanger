@@ -88,10 +88,26 @@ namespace AnimeChanger
             XmlDocument secrets = new XmlDocument();
             secrets.Load(Path.Combine(FolderPath, "secrets.xml"));
 
-            XmlNode root = secrets.SelectSingleNode("Secrets");
-            byte[] lol = { 0 };
-            ret.email = Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(root.FirstChild.InnerText), lol, DataProtectionScope.CurrentUser));
-            ret.password = Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(root.LastChild.InnerText), lol, DataProtectionScope.CurrentUser));
+            try
+            {
+                XmlNode root = secrets.SelectSingleNode("Secrets");
+                byte[] lol = { 0 };
+                ret.email = Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(root.FirstChild.InnerText), lol, DataProtectionScope.CurrentUser));
+                ret.password = Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(root.LastChild.InnerText), lol, DataProtectionScope.CurrentUser));
+            }
+            catch (SystemException ex)
+            {
+                if (ex is CryptographicException || ex is FormatException)
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format("(Error: {0})\nCouldn't retrieve login credentials. Please re-enter your login data.", ex.GetType().ToString()), "Error");
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.Message);
+                }
+                ret = null;
+            }
+
             return ret;
         }
         
@@ -107,8 +123,8 @@ namespace AnimeChanger
             to_write.email = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.email), lol, DataProtectionScope.CurrentUser));
             to_write.password = Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(secrets.password), lol, DataProtectionScope.CurrentUser));
             System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Secrets));
-            StreamWriter wfile = new StreamWriter(Path.Combine(FolderPath, "secrets.xml"));
-            writer.Serialize(wfile, to_write);
+            using (StreamWriter wfile = new StreamWriter(Path.Combine(FolderPath, "secrets.xml")))
+                writer.Serialize(wfile, to_write);
         }
     }
 }

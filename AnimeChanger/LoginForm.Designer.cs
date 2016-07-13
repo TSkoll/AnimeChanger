@@ -65,7 +65,7 @@
             // 
             this.tboxPassword.Location = new System.Drawing.Point(68, 31);
             this.tboxPassword.Name = "tboxPassword";
-            this.tboxPassword.PasswordChar = '*';
+            this.tboxPassword.PasswordChar = '⬤';
             this.tboxPassword.Size = new System.Drawing.Size(204, 20);
             this.tboxPassword.TabIndex = 3;
             // 
