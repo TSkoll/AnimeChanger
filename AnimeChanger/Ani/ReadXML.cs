@@ -27,106 +27,118 @@ namespace AnimeChanger.Ani
     internal static class XML
     {
         internal static string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DoubleKilled_AniChanger");
-                               
-        internal static IEnumerable<Filter> ReadXML()
+
+        internal static Filter[] GetGlobalFilters()
         {
+            List<Filter> retList = new List<Filter>();
+
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
 
-            XmlNode root = doc.SelectSingleNode("Root");
-
-            XmlNode GlobalCont = root.SelectSingleNode("GlobalFilters");
-            foreach (XmlNode node in GlobalCont.ChildNodes)
+            XmlNode GlobalFilterCont = doc.SelectSingleNode("/Root/GlobalFilters");
+            foreach (XmlNode node in GlobalFilterCont.ChildNodes)
             {
-                Filter f = new Filter();
-                f.Keyword = node.Attributes["Keyword"].InnerText ?? null;
-                f.IsGlobal = true;
-
                 if (node.Name == "Filter")
                 {
-                    var filter = new BasicFilter();
+                    BasicFilter filter = new BasicFilter();
+                    filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
                     filter.FilterWord = node.InnerText;
 
-                    f.FilterType = filter;
-
-                    yield return f;
+                    retList.Add(filter);
                 }
                 else if (node.Name == "Replace")
                 {
-                    var filter = new Replace();
+                    Replace filter = new Replace();
+                    filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+
                     filter.From = node.Attributes["From"].InnerText;
                     filter.To = node.InnerText;
 
-                    f.FilterType = filter;
-
-                    yield return f;
+                    retList.Add(filter);
                 }
             }
 
-            XmlNode WebCont = root.SelectSingleNode("WebsiteFilters");
-            foreach (XmlNode node in WebCont.ChildNodes)
+            return retList.ToArray();
+        }
+
+        internal static Website2[] GetWebsiteFilters()
+        {
+            List<Website2> retList = new List<Website2>();
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Path.Combine(FolderPath, "ani.xml"));
+
+            XmlNode WebsiteFilterCont = doc.SelectSingleNode("/Root/WebsiteFilters");
+            foreach (XmlNode node in WebsiteFilterCont.ChildNodes)
             {
-                Filter f = new Filter();
-                f.Keyword = node.Attributes["Keyword"].InnerText ?? null;
-                f.IsGlobal = false;
+                Website2 web = new Website2();
+                web.Keyword = node.Attributes["Keyword"].InnerText; // Must have Keyword
 
-                if (node.Name == "Replace")
+                List<Filter> filters = new List<Filter>();
+                foreach (XmlNode n in node.ChildNodes)
                 {
-                    var filter = new Replace();
-                    filter.From = node.Attributes["From"].InnerText;
-                    filter.To = node.InnerText;
+                    if (n.Name == "Replace")
+                    {
+                        Replace filter = new Replace();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                    f.FilterType = filter;
+                        filter.From = n.Attributes["From"].InnerText;
+                        filter.To = n.InnerText;
 
-                    yield return f;
+                        filters.Add(filter);
+                    }
+                    else if (n.Name == "RemoveFromStart")
+                    {
+                        RemoveFromStart filter = new RemoveFromStart();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        filter.Char = n.InnerText.ToCharArray()[0];
+
+                        filters.Add(filter);
+                    }
+                    else if (n.Name == "RemoveFromChar")
+                    {
+                        RemoveFromChar filter = new RemoveFromChar();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        filter.Char = n.InnerText.ToCharArray()[0];
+
+                        filters.Add(filter);
+                    }
+                    else if (n.Name == "RemoveInBetween")
+                    {
+                        RemoveInBetween filter = new RemoveInBetween();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        filter.FirstChar = n.Attributes["FirstChar"].InnerText.ToCharArray()[0];
+                        filter.LastChar = n.InnerText.ToCharArray()[0];
+
+                        filters.Add(filter);
+                    }
+                    else if (n.Name == "Filter")
+                    {
+                        BasicFilter filter = new BasicFilter();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        filter.FilterWord = n.InnerText;
+
+                        filters.Add(filter);
+                    }
+                    else if (n.Name == "Add")
+                    {
+                        BasicAdd filter = new BasicAdd();
+                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        filter.AddWord = n.InnerText;
+
+                        filters.Add(filter);
+                    }
                 }
-                else if (node.Name == "RemoveFromStart")
-                {
-                    var filter = new RemoveFromStart();
-                    filter.Char = node.InnerText.ToCharArray()[0];
-
-                    f.FilterType = filter;
-
-                    yield return f;
-                }
-                else if (node.Name == "RemoveFromChar")
-                {
-                    var filter = new RemoveFromChar();
-                    filter.Char = node.InnerText.ToCharArray()[0];
-
-                    f.FilterType = filter;
-
-                    yield return f;
-                }
-                else if (node.Name == "RemoveInBetween")
-                {
-                    var filter = new RemoveInBetween();
-                    filter.FirstChar = node.Attributes["FirstChar"].InnerText.ToCharArray()[0];
-                    filter.LastChar = node.InnerText.ToCharArray()[0];
-
-                    f.FilterType = filter;
-
-                    yield return f;
-                }
-                else if (node.Name == "Filter")
-                {
-                    var filter = new BasicFilter();
-                    filter.FilterWord = node.InnerText;
-
-                    f.FilterType = filter;
-
-                    yield return f;
-                }
-                else if (node.Name == "Add")
-                {
-                    var filter = new BasicAdd();
-                    filter.AddWord = node.InnerText;
-
-                    f.FilterType = filter;
-
-                    yield return f;
-                }
+                web.Filters = filters.ToArray();
+                retList.Add(web);
             }
+
+            return retList.ToArray();
         }
     }
 }
