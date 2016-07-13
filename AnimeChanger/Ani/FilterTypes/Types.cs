@@ -12,18 +12,6 @@ namespace AnimeChanger.Ani.FilterTypes
         public string To { get; set; }
     }
 
-    public class Whitelist
-    {
-        public string Keyword { get; set; }
-        public bool Found { get; set; }
-    }
-
-    public class Blacklist
-    {
-        public string Keyword { get; set; }
-        public bool Found { get; set; }
-    }
-
     public class RemoveFromStart
     {
         public char Char { get; set; }
