@@ -6,59 +6,47 @@ using System.Threading.Tasks;
 
 namespace AnimeChanger.Ani.FilterTypes
 {
-    public struct Replace
+    public class Replace
     {
         public string From { get; set; }
         public string To { get; set; }
     }
 
-    public struct Whitelist
+    public class Whitelist
     {
         public string Keyword { get; set; }
         public bool Found { get; set; }
     }
 
-    public struct Blacklist
+    public class Blacklist
     {
         public string Keyword { get; set; }
         public bool Found { get; set; }
     }
 
-    public struct RemoveFromStart
+    public class RemoveFromStart
     {
         public char Char { get; set; }
     }
 
-    public struct RemoveFromChar
+    public class RemoveFromChar
     {
         public char Char { get; set; }
     }
 
-    public struct RemoveInBetween
+    public class RemoveInBetween
     {
         public char FirstChar { get; set; }
         public char LastChar { get; set; }
     }
 
-    public struct BasicFilter
+    public class BasicFilter
     {
         public string FilterWord { get; set; }
     }
 
-    public struct BasicAdd
+    public class BasicAdd
     {
         public string AddWord { get; set; }
-    }
-
-    public enum TypeInt
-    {
-        Replace = 0,
-        Whitelist = 1,
-        Blacklist = 2,
-        RemoveFromStart = 4,
-        RemoveFromChar = 8,
-        RemoveInBetween = 16,
-        BasicFilter = 32,
-        BasicAdd = 64
     }
 }

@@ -28,26 +28,42 @@ namespace AnimeChanger.Ani
     {
         internal static string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DoubleKilled_AniChanger");
                                
-        //                          Global or website
-        //                                 \/
-        internal static IEnumerable<Tuple<string, int, object>> ReadXML()
+        internal static IEnumerable<Filter> ReadXML()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
 
-            XmlNode root = doc.SelectSingleNode("root");
-            XmlNodeList nl = root.ChildNodes;
+            XmlNode root = doc.SelectSingleNode("Root");
 
-            XmlNode GlobalFilters = root.SelectSingleNode("GlobalFilters");
-            foreach (XmlNode node in GlobalFilters.ChildNodes)
+            XmlNode GlobalCont = root.SelectSingleNode("GlobalFilters");
+            foreach (XmlNode node in GlobalCont.ChildNodes)
             {
-                var TypeInt = FilterController.GetFilterType(node.Attributes["Type"].InnerText);
+                Filter f = new Filter();
+                f.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+                f.IsGlobal = true;
 
-                yield return new Tuple<string, int, object>(null, TypeInt, null);
+                if (node.Name == "Filter")
+                {
+                    var filter = new BasicFilter();
+                    filter.FilterWord = node.InnerText;
+
+                    f.FilterType = filter;
+
+                    yield return f;
+                }
+                else if (node.Name == "Replace")
+                {
+                    var filter = new Replace();
+                    filter.From = node.Attributes["From"].InnerText;
+                    filter.To = node.InnerText;
+
+                    f.FilterType = filter;
+
+                    yield return f;
+                }
             }
 
-
-            yield return null;
+            return null;
         }
     }
 }
