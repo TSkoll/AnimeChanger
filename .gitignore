@@ -212,6 +212,3 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-
-# Other
-AnimeChanger/Secrets.cs

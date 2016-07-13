@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ani\Filter.cs" />
-    <Compile Include="Ani\FilterTypes\TypeController.cs" />
     <Compile Include="Ani\ReadXML.cs" />
     <Compile Include="Ani\FilterTypes\Types.cs" />
     <Compile Include="Browser.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="Misc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Secrets.cs" />
     <Compile Include="Website.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

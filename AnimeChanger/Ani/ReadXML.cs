@@ -28,6 +28,10 @@ namespace AnimeChanger.Ani
     {
         internal static string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DoubleKilled_AniChanger");
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         internal static Filter[] GetGlobalFilters()
         {
             List<Filter> retList = new List<Filter>();
@@ -61,6 +65,10 @@ namespace AnimeChanger.Ani
             return retList.ToArray();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         internal static Website2[] GetWebsiteFilters()
         {
             List<Website2> retList = new List<Website2>();
