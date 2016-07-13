@@ -67,11 +67,23 @@ namespace AnimeChanger
                     CheckTimer.Start();
                 };
 
-                Client.ExecuteAndWait(async () =>
+                try
                 {
-                    await Client.Connect(sec.email, sec.password);
-                    TimerCheck();
-                });
+                    Client.ExecuteAndWait(async () =>
+                    {
+                        await Client.Connect(sec.email, sec.password);
+                        TimerCheck();
+                    });
+                }
+                catch (Discord.Net.HttpException ex)
+                {
+                    MessageBox.Show(String.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
+                    if (File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml"))) 
+                    {
+                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                    }
+                    RetryLogin();
+                }
 
                 return; // This should only run after Client.ExecuteAndWait fails/ends
             });
@@ -202,6 +214,14 @@ namespace AnimeChanger
                 StatusLabel.Text = text;
             });
         }
+
+        internal void RetryLogin()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                LoginBtn_Click(this, new EventArgs());
+            });
+        }
         #endregion
 
         #region Events
@@ -223,7 +243,14 @@ namespace AnimeChanger
             }
             else
             {
-                StartClient(Misc.ReadSecrets());
+                Secrets secrets = Misc.ReadSecrets();
+                if (secrets != null)
+                    StartClient(secrets);
+                else
+                {
+                    File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                    LoginBtn_Click(this, new EventArgs());
+                }
             }
         }
 
