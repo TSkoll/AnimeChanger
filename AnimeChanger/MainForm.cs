@@ -219,7 +219,18 @@ namespace AnimeChanger
         {
             Invoke((MethodInvoker)delegate
             {
-                LoginBtn_Click(this, new EventArgs());
+                LoginBtn.Text = "Please wait";
+                LoginBtn.Enabled = false;
+                System.Timers.Timer stop_police = new System.Timers.Timer(5000);
+                stop_police.AutoReset = false;
+                stop_police.Elapsed += (delegate {
+                    LoginBtn.Invoke((MethodInvoker)delegate {
+                        LoginBtn.Text = "Log in";
+                        LoginBtn.Enabled = true;
+                        LoginBtn_Click(this, new EventArgs());
+                    });
+                });
+                stop_police.Start();
             });
         }
         #endregion
@@ -249,7 +260,7 @@ namespace AnimeChanger
                 else
                 {
                     File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
-                    LoginBtn_Click(this, new EventArgs());
+                    RetryLogin();
                 }
             }
         }
