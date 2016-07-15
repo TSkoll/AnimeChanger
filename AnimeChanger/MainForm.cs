@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.IO;
 using Discord;
-
-using AnimeChanger.Ani;
-using AnimeChanger.Ani.FilterTypes;
 
 namespace AnimeChanger
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form, ILogin
     {
         /// <summary>
         /// List of supported browsers.
@@ -32,22 +30,13 @@ namespace AnimeChanger
         /// </summary>
         List<Website> WebCache = new List<Website>();
 
-        /// <summary>
-        /// Global filters loaded to memory
-        /// </summary>
-        Filter[] GlobalFilters;
-
-        /// <summary>
-        /// Cache of websites loaded to memory
-        /// </summary>
-        Website2[] WebCache2;
 
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
         DiscordClient Client;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -56,63 +45,68 @@ namespace AnimeChanger
             {
                 WebCache.Add(w);
             }
-
-            GlobalFilters = XML.GetGlobalFilters();
-            WebCache2 = XML.GetWebsiteFilters();
         }
 
         #region Discord.Net
-
         /// <summary>
         /// Starts Discord.DiscordClient, logs in and starts the check loop.
         /// </summary>
-        public void StartClient()
+        public void StartClient(Secrets secrets)
         {
+            Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
 
                 Client = new DiscordClient();
 
-                //Client.Ready += (s, e) =>
-                //{
-                //    ChangeStatusLabel("Logged in");
-                //    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                //    CheckTimer.Start();
-                //};
-
-                Client.ExecuteAndWait(async () =>
+                Client.Ready += (s, e) =>
                 {
-                    await Client.Connect(Secrets.email, Secrets.password);
-                    TimerCheck();
-                });
+                    ChangeStatusLabel("Logged in");
+                    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
+                    CheckTimer.Start();
+                };
 
-                ChangeStatusLabel("Logged in");
-                CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                CheckTimer.Start();
+                try
+                {
+                    Client.ExecuteAndWait(async () =>
+                    {
+                        await Client.Connect(sec.email, sec.password);
+                        TimerCheck();
+                    });
+                }
+                catch (Discord.Net.HttpException ex)
+                {
+                    MessageBox.Show(String.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
+                    if (File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml"))) 
+                    {
+                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                    }
+                    RetryLogin();
+                }
 
-                //return; // This should only run after Client.ExecuteAndWait fails/ends
+                return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
         }
         #endregion
 
-        #region idk
+        #region Browser handling
         #region Process stuff
         /// <summary>
         /// Returns one single process of (first) keyword match found.
         /// </summary>
         /// <param name="Processes">System.Tuple of Browser and Process, browser processes currently running.</param>
         /// <returns>System.Tuple of Browser, Process, Website; Everything you can gather from scraping a thread.</returns>
-        public Tuple<Browser, Process, Website2> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
+        public Tuple<Browser, Process, Website> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
         {
             foreach (var pair in Processes)
             {
-                foreach (var w in WebCache2) // WebCache fallback still a possibility
+                foreach (var w in WebCache)
                 {
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
-                        return new Tuple<Browser, Process, Website2>(pair.Item1, pair.Item2, w);
+                        return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
                 }
             }
             return null;
@@ -151,7 +145,7 @@ namespace AnimeChanger
         /// <param name="usedBrowser">AnimeChanger.Browser, browser thread where the title was gathered</param>
         /// <param name="usedSite">AnimeChanger.Website, website where the anime is being watched</param>
         /// <returns>System.String, parsed string</returns>
-        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website2 usedSite)
+        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
         {
             var retString = fullTitle;
             foreach (string s in usedBrowser.RemoveBrowserTitles)
@@ -159,14 +153,18 @@ namespace AnimeChanger
                 retString = retString.Replace(s, "");
             }
             
-
-            foreach (var filter in usedSite.Filters)
+            foreach (string filter in usedSite.RemoveStrings)
             {
                 retString = retString.Replace(filter, "╚");
             }
 
             retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
             return retString;
+        }
+
+        public void PassSecrets(Secrets sec)
+        {
+            StartClient(sec);
         }
         #endregion
 
@@ -216,6 +214,25 @@ namespace AnimeChanger
                 StatusLabel.Text = text;
             });
         }
+
+        internal void RetryLogin()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                LoginBtn.Text = "Please wait";
+                LoginBtn.Enabled = false;
+                System.Timers.Timer stop_police = new System.Timers.Timer(5000);
+                stop_police.AutoReset = false;
+                stop_police.Elapsed += (delegate {
+                    LoginBtn.Invoke((MethodInvoker)delegate {
+                        LoginBtn.Text = "Log in";
+                        LoginBtn.Enabled = true;
+                        LoginBtn_Click(this, new EventArgs());
+                    });
+                });
+                stop_police.Start();
+            });
+        }
         #endregion
 
         #region Events
@@ -230,12 +247,28 @@ namespace AnimeChanger
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-            StartClient();
+            if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+            {            
+                LoginForm login = new LoginForm(this);
+                login.Show();
+            }
+            else
+            {
+                Secrets secrets = Misc.ReadSecrets();
+                if (secrets != null)
+                    StartClient(secrets);
+                else
+                {
+                    File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                    RetryLogin();
+                }
+            }
         }
 
         private void Client_Closing(object sender, FormClosingEventArgs e)
         {
-            Client.Disconnect();
+            if (Client != null)
+                Client.Disconnect();
         }
         #endregion
     }
