@@ -4,9 +4,9 @@
 		<Website Keyword="crunchyroll - watch">
 			<Filter>Crunchyroll - Watch </Filter>
 		</Website>
-    <website keyword="online in high quality">
-      <filter>online in high quality</filter>
-      <filter> - Watch </filter>
-    </website>
+    <Website keyword="online in high quality">
+      <Filter>online in high quality</Filter>
+      <Filter> - Watch </Filter>
+    </Website>
 	</WebsiteFilters>
 </Root>
