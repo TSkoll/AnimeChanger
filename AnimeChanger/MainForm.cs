@@ -30,10 +30,10 @@ namespace AnimeChanger
         /// <summary>
         /// List of AnimeChanger.Website(s) loaded to memory.
         /// </summary>
-        List<Website> WebCache = new List<Website>();
+        //List<Website> WebCache = new List<Website>();
 
         /// <summary>
-        /// TODO
+        /// TODOS
         /// </summary>
         Filter[] GlobalFilters;
 
@@ -52,10 +52,6 @@ namespace AnimeChanger
             InitializeComponent();
 
             Misc.CheckFolder();
-            //foreach (Website w in Misc.ReadXML())
-            //{
-            //    WebCache.Add(w);
-            //}
 
             GlobalFilters = XML.GetGlobalFilters();
             WebCache2 = XML.GetWebsiteFilters();
@@ -83,16 +79,11 @@ namespace AnimeChanger
 
                 try
                 {
-                    //Client.ExecuteAndWait(async () =>
-                    //{
-                    //    await Client.Connect(sec.email, sec.password);
-                    //    TimerCheck();
-                    //});
-
-                    TimerCheck();
-                    ChangeStatusLabel("Logged in");
-                    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                    CheckTimer.Start();
+                    Client.ExecuteAndWait(async () =>
+                    {
+                        await Client.Connect(sec.email, sec.password);
+                        TimerCheck();
+                    });
                 }
                 catch (Discord.Net.HttpException ex)
                 {
@@ -104,7 +95,7 @@ namespace AnimeChanger
                     RetryLogin();
                 }
 
-                //return; // This should only run after Client.ExecuteAndWait fails/ends
+                return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -172,12 +163,6 @@ namespace AnimeChanger
                 retString = retString.Replace(s, "");
             }
 
-            //foreach (string filter in usedSite.RemoveStrings)
-            //{
-            //    retString = retString.Replace(filter, "╚");
-            //}
-
-
             if (GlobalFilters != null)
             {
                 foreach (Filter filter in GlobalFilters)
@@ -240,7 +225,7 @@ namespace AnimeChanger
 
             if (title != lastTitle)
             {
-                //Client.SetGame(new Game(title));
+                Client.SetGame(new Game(title));
                 ChangeTextboxText(title);
             }
 
@@ -286,12 +271,6 @@ namespace AnimeChanger
         #region Events
         private void RefreshBtn_Click(object sender, EventArgs e)
         {
-            //WebCache.Clear();
-            //foreach (Website w in Misc.ReadXML())
-            //{
-            //    WebCache.Add(w);
-            //}
-
             WebCache2 = null;
             WebCache2 = XML.GetWebsiteFilters();
 
