@@ -12,6 +12,11 @@ namespace AnimeChanger.Ani.FilterTypes
 
         public string From { get; set; }
         public string To { get; set; }
+
+        public string Parse(string Title)
+        {
+            return Title.Replace(From, To);
+        }
     }
 
     public class RemoveFromStart : Filter
@@ -19,6 +24,11 @@ namespace AnimeChanger.Ani.FilterTypes
         public string Keyword { get; set; }
 
         public char Char { get; set; }
+
+        public string Parse(string Title)
+        {
+            return Title.Remove(0, Title.IndexOf(Char) + 1);
+        }
     }
 
     public class RemoveFromChar : Filter
@@ -26,6 +36,11 @@ namespace AnimeChanger.Ani.FilterTypes
         public string Keyword { get; set; }
 
         public char Char { get; set; }
+
+        public string Parse(string Title)
+        {
+            return Title.Remove(Title.IndexOf(Char), Title.Length - Title.IndexOf(Char));
+        }
     }
 
     public class RemoveInBetween : Filter
@@ -34,6 +49,11 @@ namespace AnimeChanger.Ani.FilterTypes
 
         public char FirstChar { get; set; }
         public char LastChar { get; set; }
+
+        public string Parse(string Title)
+        {
+            return Title.Remove(Title.IndexOf(FirstChar), Title.LastIndexOf(LastChar) - Title.IndexOf(FirstChar));
+        }
     }
 
     public class BasicFilter : Filter
@@ -41,6 +61,11 @@ namespace AnimeChanger.Ani.FilterTypes
         public string Keyword { get; set; }
 
         public string FilterWord { get; set; }
+
+        public string Parse(string Title)
+        {
+            return Title.Replace(FilterWord, "");
+        }
     }
 
     public class BasicAdd : Filter
@@ -48,5 +73,10 @@ namespace AnimeChanger.Ani.FilterTypes
         public string Keyword { get; set; }
 
         public string AddWord { get; set; }
+
+        public string Parse(string Title)
+        {
+            return AddWord + Title;
+        }
     }
 }

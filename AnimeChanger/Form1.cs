@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Threading;
 using Discord;
 
+using AnimeChanger.Ani;
+using AnimeChanger.Ani.FilterTypes;
+
 namespace AnimeChanger
 {
     public partial class Form1 : Form
@@ -30,6 +33,16 @@ namespace AnimeChanger
         List<Website> WebCache = new List<Website>();
 
         /// <summary>
+        /// Global filters loaded to memory
+        /// </summary>
+        Filter[] GlobalFilters;
+
+        /// <summary>
+        /// Cache of websites loaded to memory
+        /// </summary>
+        Website2[] WebCache2;
+
+        /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
         DiscordClient Client;
@@ -43,6 +56,9 @@ namespace AnimeChanger
             {
                 WebCache.Add(w);
             }
+
+            GlobalFilters = XML.GetGlobalFilters();
+            WebCache2 = XML.GetWebsiteFilters();
         }
 
         #region Discord.Net
@@ -58,19 +74,23 @@ namespace AnimeChanger
 
                 Client = new DiscordClient();
 
-                Client.Ready += (s, e) =>
-                {
-                    ChangeStatusLabel("Logged in");
-                    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                    CheckTimer.Start();
-                };
+                //Client.Ready += (s, e) =>
+                //{
+                //    ChangeStatusLabel("Logged in");
+                //    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
+                //    CheckTimer.Start();
+                //};
 
-                Client.ExecuteAndWait(async () =>
-                {
-                    await Client.Connect(Secrets.email, Secrets.password);
-                });
+                //Client.ExecuteAndWait(async () =>
+                //{
+                //    await Client.Connect(Secrets.email, Secrets.password);
+                //});
 
-                return; // This should only run after Client.ExecuteAndWait fails/ends
+                ChangeStatusLabel("Logged in");
+                CheckTimer.Elapsed += (s1, e1) => TimerCheck();
+                CheckTimer.Start();
+
+                //return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -84,14 +104,14 @@ namespace AnimeChanger
         /// </summary>
         /// <param name="Processes">System.Tuple of Browser and Process, browser processes currently running.</param>
         /// <returns>System.Tuple of Browser, Process, Website; Everything you can gather from scraping a thread.</returns>
-        public Tuple<Browser, Process, Website> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
+        public Tuple<Browser, Process, Website2> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
         {
             foreach (var pair in Processes)
             {
-                foreach (var w in WebCache)
+                foreach (var w in WebCache2) // WebCache fallback still a possibility
                 {
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
-                        return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
+                        return new Tuple<Browser, Process, Website2>(pair.Item1, pair.Item2, w);
                 }
             }
             return null;
@@ -130,7 +150,7 @@ namespace AnimeChanger
         /// <param name="usedBrowser">AnimeChanger.Browser, browser thread where the title was gathered</param>
         /// <param name="usedSite">AnimeChanger.Website, website where the anime is being watched</param>
         /// <returns>System.String, parsed string</returns>
-        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
+        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website2 usedSite)
         {
             var retString = fullTitle;
             foreach (string s in usedBrowser.RemoveBrowserTitles)
@@ -138,10 +158,22 @@ namespace AnimeChanger
                 retString = retString.Replace(s, "");
             }
             
-            foreach (string filter in usedSite.RemoveStrings)
+
+            foreach (var filter in usedSite.Filters)
             {
-                retString = retString.Replace(filter, "");
+                if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                {
+                    retString = filter.Parse(retString);
+                }
             }
+
+            //foreach (string filter in usedSite.RemoveStrings)
+            //{
+            //    retString = retString.Replace(filter, "");
+            //}
+
+            
+
             return retString;
         }
         #endregion
