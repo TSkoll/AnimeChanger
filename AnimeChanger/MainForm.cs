@@ -171,21 +171,42 @@ namespace AnimeChanger
             {
                 retString = retString.Replace(s, "");
             }
-            
+
             //foreach (string filter in usedSite.RemoveStrings)
             //{
             //    retString = retString.Replace(filter, "╚");
             //}
 
-            foreach (var filter in usedSite.Filters)
+
+            if (GlobalFilters != null)
             {
-                if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                foreach (Filter filter in GlobalFilters)
                 {
-                    retString = filter.Parse(retString);
+                    if (filter.Keyword != null)
+                    {
+                        if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                        {
+                            retString = filter.Parse(retString);
+                        }
+                    }
+                    else
+                        retString = filter.Parse(retString);
                 }
             }
 
-            //retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
+            foreach (var filter in usedSite.Filters)
+            {
+                if (filter.Keyword != null)
+                {
+                    if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                    {
+                        retString = filter.Parse(retString);
+                    }
+                }
+                else
+                    retString = filter.Parse(retString);
+            }
+
             return retString;
         }
 
@@ -219,7 +240,7 @@ namespace AnimeChanger
 
             if (title != lastTitle)
             {
-                Client.SetGame(new Game(title));
+                //Client.SetGame(new Game(title));
                 ChangeTextboxText(title);
             }
 

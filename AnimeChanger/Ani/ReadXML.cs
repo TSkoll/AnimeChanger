@@ -40,12 +40,25 @@ namespace AnimeChanger.Ani
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
 
             XmlNode GlobalFilterCont = doc.SelectSingleNode("/Root/GlobalFilters");
+
+            if (GlobalFilterCont.ChildNodes == null) // If there are no Global filters
+                return null;
+
             foreach (XmlNode node in GlobalFilterCont.ChildNodes)
             {
                 if (node.Name == "Filter")
                 {
                     BasicFilter filter = new BasicFilter();
-                    filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+                    //filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+
+                    if (node.Attributes != null)
+                        if (node.Attributes["Keyword"] != null)
+                            filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+                        else
+                            filter.Keyword = null;
+                    else
+                        filter.Keyword = null;
+
                     filter.FilterWord = node.InnerText;
 
                     retList.Add(filter);
@@ -53,7 +66,15 @@ namespace AnimeChanger.Ani
                 else if (node.Name == "Replace")
                 {
                     Replace filter = new Replace();
-                    filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+                    //filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+
+                    if (node.Attributes != null)
+                        if (node.Attributes["Keyword"] != null)
+                            filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
+                        else
+                            filter.Keyword = null;
+                    else
+                        continue;
 
                     filter.From = node.Attributes["From"].InnerText;
                     filter.To = node.InnerText;
@@ -77,6 +98,10 @@ namespace AnimeChanger.Ani
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
 
             XmlNode WebsiteFilterCont = doc.SelectSingleNode("/Root/WebsiteFilters");
+
+            if (WebsiteFilterCont.ChildNodes == null)
+                return null;
+
             foreach (XmlNode node in WebsiteFilterCont.ChildNodes)
             {
                 Website2 web = new Website2();
@@ -88,7 +113,15 @@ namespace AnimeChanger.Ani
                     if (n.Name == "Replace")
                     {
                         Replace filter = new Replace();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            continue;
 
                         filter.From = n.Attributes["From"].InnerText;
                         filter.To = n.InnerText;
@@ -98,7 +131,15 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveFromStart")
                     {
                         RemoveFromStart filter = new RemoveFromStart();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            filter.Keyword = null;
 
                         filter.Char = n.InnerText.ToCharArray()[0];
 
@@ -107,7 +148,15 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveFromChar")
                     {
                         RemoveFromChar filter = new RemoveFromChar();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            filter.Keyword = null;
 
                         filter.Char = n.InnerText.ToCharArray()[0];
 
@@ -116,7 +165,15 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveInBetween")
                     {
                         RemoveInBetween filter = new RemoveInBetween();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            continue;
 
                         filter.FirstChar = n.Attributes["FirstChar"].InnerText.ToCharArray()[0];
                         filter.LastChar = n.InnerText.ToCharArray()[0];
@@ -126,7 +183,15 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "Filter")
                     {
                         BasicFilter filter = new BasicFilter();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            filter.Keyword = null;
 
                         filter.FilterWord = n.InnerText;
 
@@ -135,7 +200,15 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "Add")
                     {
                         BasicAdd filter = new BasicAdd();
-                        filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+
+                        if (n.Attributes != null)
+                            if (n.Attributes["Keyword"] != null)
+                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
+                            else
+                                filter.Keyword = null;
+                        else
+                            filter.Keyword = null;
 
                         filter.AddWord = n.InnerText;
 
