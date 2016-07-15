@@ -48,7 +48,7 @@ namespace AnimeChanger
             if (!Directory.Exists(FolderPath))
             {
                 Directory.CreateDirectory(FolderPath);
-                File.WriteAllText(Path.Combine(FolderPath, "ani.xml"), "<root> \n </root>");
+                File.WriteAllText(Path.Combine(FolderPath, "ani.xml"), Properties.Resources.ani);
             }
         }
 

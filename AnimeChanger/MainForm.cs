@@ -286,11 +286,17 @@ namespace AnimeChanger
         #region Events
         private void RefreshBtn_Click(object sender, EventArgs e)
         {
-            WebCache.Clear();
-            foreach (Website w in Misc.ReadXML())
-            {
-                WebCache.Add(w);
-            }
+            //WebCache.Clear();
+            //foreach (Website w in Misc.ReadXML())
+            //{
+            //    WebCache.Add(w);
+            //}
+
+            WebCache2 = null;
+            WebCache2 = XML.GetWebsiteFilters();
+
+            GlobalFilters = null;
+            GlobalFilters = XML.GetGlobalFilters();
         }
 
         private void LoginBtn_Click(object sender, EventArgs e)
