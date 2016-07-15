@@ -68,7 +68,7 @@ namespace AnimeChanger
             Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
-                System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
+                System.Timers.Timer CheckTimer = new System.Timers.Timer(15000);
 
                 Client = new DiscordClient();
 
@@ -81,11 +81,11 @@ namespace AnimeChanger
 
                 try
                 {
-                    //Client.ExecuteAndWait(async () =>
-                    //{
-                    //    await Client.Connect(sec.email, sec.password);
-                    //    TimerCheck();
-                    //});
+                    Client.ExecuteAndWait(async () =>
+                    {
+                        await Client.Connect(sec.email, sec.password);
+                        TimerCheck();
+                    });
                 }
                 catch (Discord.Net.HttpException ex)
                 {
@@ -97,12 +97,7 @@ namespace AnimeChanger
                     RetryLogin();
                 }
 
-                ChangeStatusLabel("Logged in");
-                CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                CheckTimer.Start();
-
-
-                //return; // This should only run after Client.ExecuteAndWait fails/ends
+                return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -240,7 +235,7 @@ namespace AnimeChanger
 
             if (title != lastTitle)
             {
-                //Client.SetGame(new Game(title));
+                Client.SetGame(new Game(title));
                 ChangeTextboxText(title);
             }
 
