@@ -107,6 +107,11 @@ namespace AnimeChanger.Ani
                 Website2 web = new Website2();
                 web.Keyword = node.Attributes["Keyword"].InnerText; // Must have Keyword
 
+                if (node.Attributes["Blacklist"] != null)
+                    web.Blacklist = node.Attributes["Blacklist"].InnerText;
+                else
+                    web.Blacklist = null;
+
                 List<Filter> filters = new List<Filter>();
                 foreach (XmlNode n in node.ChildNodes)
                 {
@@ -186,12 +191,20 @@ namespace AnimeChanger.Ani
                         //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
                         if (n.Attributes != null)
+                        {
                             if (n.Attributes["Keyword"] != null)
                                 filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
                             else
                                 filter.Keyword = null;
+
+                            if (n.Attributes["Blacklist"] != null)
+                                filter.Blacklist = n.Attributes["Blacklist"].InnerText ?? null;
+                        }
                         else
+                        {
                             filter.Keyword = null;
+                            filter.Blacklist = null;
+                        }
 
                         filter.FilterWord = n.InnerText;
 

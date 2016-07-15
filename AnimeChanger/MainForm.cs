@@ -47,6 +47,8 @@ namespace AnimeChanger
         /// </summary>
         DiscordClient Client;
 
+        byte ResetInt = 0;
+
         public MainForm()
         {
             InitializeComponent();
@@ -79,11 +81,11 @@ namespace AnimeChanger
 
                 try
                 {
-                    Client.ExecuteAndWait(async () =>
-                    {
-                        await Client.Connect(sec.email, sec.password);
-                        TimerCheck();
-                    });
+                    //Client.ExecuteAndWait(async () =>
+                    //{
+                    //    await Client.Connect(sec.email, sec.password);
+                    //    TimerCheck();
+                    //});
                 }
                 catch (Discord.Net.HttpException ex)
                 {
@@ -95,7 +97,12 @@ namespace AnimeChanger
                     RetryLogin();
                 }
 
-                return; // This should only run after Client.ExecuteAndWait fails/ends
+                ChangeStatusLabel("Logged in");
+                CheckTimer.Elapsed += (s1, e1) => TimerCheck();
+                CheckTimer.Start();
+
+
+                //return; // This should only run after Client.ExecuteAndWait fails/ends
             });
             DiscordThread.Name = "Spaghetti";
             DiscordThread.Start();
@@ -115,6 +122,10 @@ namespace AnimeChanger
             {
                 foreach (var w in WebCache2)
                 {
+                    if (w.Blacklist != null)
+                        if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Blacklist.ToLower()))
+                            continue;
+
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
                         return new Tuple<Browser, Process, Website2>(pair.Item1, pair.Item2, w);
                 }
@@ -181,6 +192,10 @@ namespace AnimeChanger
 
             foreach (var filter in usedSite.Filters)
             {
+                if (filter.Blacklist != null)
+                    if (fullTitle.ToLower().Contains(filter.Blacklist.ToLower()))
+                        continue;
+
                 if (filter.Keyword != null)
                 {
                     if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
@@ -225,7 +240,7 @@ namespace AnimeChanger
 
             if (title != lastTitle)
             {
-                Client.SetGame(new Game(title));
+                //Client.SetGame(new Game(title));
                 ChangeTextboxText(title);
             }
 

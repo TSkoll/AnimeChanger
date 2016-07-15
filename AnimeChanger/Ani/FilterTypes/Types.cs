@@ -9,6 +9,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class Replace : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public string From { get; set; }
         public string To { get; set; }
@@ -22,6 +23,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class RemoveFromStart : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public char Char { get; set; }
 
@@ -34,6 +36,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class RemoveFromChar : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public char Char { get; set; }
 
@@ -46,6 +49,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class RemoveInBetween : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public char FirstChar { get; set; }
         public char LastChar { get; set; }
@@ -59,6 +63,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class BasicFilter : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public string FilterWord { get; set; }
 
@@ -71,6 +76,7 @@ namespace AnimeChanger.Ani.FilterTypes
     public class BasicAdd : Filter
     {
         public string Keyword { get; set; }
+        public string Blacklist { get; set; }
 
         public string AddWord { get; set; }
 
