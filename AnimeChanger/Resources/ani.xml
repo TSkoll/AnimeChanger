@@ -1,0 +1,12 @@
+<Root>
+  <GlobalFilters />
+  <WebsiteFilters>
+    <Website Keyword="crunchyroll - watch">
+      <Filter>Crunchyroll - Watch </Filter>
+    </Website>
+    <Website Keyword="online in high quality">
+      <Filter>online in high quality</Filter>
+      <Filter> - Watch </Filter>
+    </Website>
+  </WebsiteFilters>
+</Root>

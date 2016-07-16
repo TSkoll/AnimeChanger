@@ -6,6 +6,8 @@ using System.Threading;
 using System.IO;
 using Discord;
 
+using AnimeChanger.Ani;
+
 namespace AnimeChanger
 {
     public partial class MainForm : Form, ILogin
@@ -26,10 +28,14 @@ namespace AnimeChanger
         string lastTitle = null;
 
         /// <summary>
-        /// List of AnimeChanger.Website(s) loaded to memory.
+        /// An array of global filters.
         /// </summary>
-        List<Website> WebCache = new List<Website>();
+        Filter[] GlobalFilters;
 
+        /// <summary>
+        /// An array of website filters.
+        /// </summary>
+        Website[] WebCache2;
 
         /// <summary>
         /// Used for disconnecting from main thread.
@@ -41,10 +47,9 @@ namespace AnimeChanger
             InitializeComponent();
 
             Misc.CheckFolder();
-            foreach (Website w in Misc.ReadXML())
-            {
-                WebCache.Add(w);
-            }
+
+            GlobalFilters = XML.GetGlobalFilters();
+            WebCache2 = XML.GetWebsiteFilters();
         }
 
         #region Discord.Net
@@ -56,7 +61,7 @@ namespace AnimeChanger
             Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
-                System.Timers.Timer CheckTimer = new System.Timers.Timer(5000);
+                System.Timers.Timer CheckTimer = new System.Timers.Timer(7500);
 
                 Client = new DiscordClient();
 
@@ -77,7 +82,7 @@ namespace AnimeChanger
                 }
                 catch (Discord.Net.HttpException ex)
                 {
-                    MessageBox.Show(String.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
+                    MessageBox.Show(string.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
                     if (File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml"))) 
                     {
                         File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
@@ -103,8 +108,12 @@ namespace AnimeChanger
         {
             foreach (var pair in Processes)
             {
-                foreach (var w in WebCache)
+                foreach (var w in WebCache2)
                 {
+                    if (w.Blacklist != null)
+                        if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Blacklist.ToLower()))
+                            continue;
+
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
                         return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
                 }
@@ -152,16 +161,51 @@ namespace AnimeChanger
             {
                 retString = retString.Replace(s, "");
             }
-            
-            foreach (string filter in usedSite.RemoveStrings)
+
+            if (GlobalFilters != null)
             {
-                retString = retString.Replace(filter, "╚");
+                foreach (Filter filter in GlobalFilters)
+                {
+                    if (filter.Blacklist != null)
+                        if (fullTitle.ToLower().Contains(filter.Blacklist.ToLower()))
+                            continue;
+
+                    if (filter.Keyword != null)
+                    {
+                        if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                        {
+                            retString = filter.Parse(retString);
+                        }
+                    }
+                    else
+                        retString = filter.Parse(retString);
+                }
             }
 
-            retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
+            foreach (var filter in usedSite.Filters)
+            {
+                if (filter.Blacklist != null)
+                    if (fullTitle.ToLower().Contains(filter.Blacklist.ToLower()))
+                        continue;
+
+                if (filter.Keyword != null)
+                {
+                    if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
+                    {
+                        retString = filter.Parse(retString);
+                    }
+                }
+                else
+                    retString = filter.Parse(retString);
+            }
+
             return retString;
         }
 
+        /// <summary>
+        /// Passes login information from LoginForm to DiscordThread.
+        /// </summary>
+        /// <param name="sec">AnimeChanger.Secrets, login information.</param>
         public void PassSecrets(Secrets sec)
         {
             StartClient(sec);
@@ -201,6 +245,10 @@ namespace AnimeChanger
         #endregion
 
         #region Cross Thread Talking
+        /// <summary>
+        /// Changes the text on UI's TextBox.
+        /// </summary>
+        /// <param name="text">Text that is set.</param>
         internal void ChangeTextboxText(string text)
         {
             TitleBox.Invoke((MethodInvoker)delegate {
@@ -208,6 +256,10 @@ namespace AnimeChanger
             });
         }
 
+        /// <summary>
+        /// Changes the text on UI's Status label.
+        /// </summary>
+        /// <param name="text">Text that is set.</param>
         internal void ChangeStatusLabel(string text)
         {
             StatusLabel.Invoke((MethodInvoker)delegate {
@@ -238,11 +290,11 @@ namespace AnimeChanger
         #region Events
         private void RefreshBtn_Click(object sender, EventArgs e)
         {
-            WebCache.Clear();
-            foreach (Website w in Misc.ReadXML())
-            {
-                WebCache.Add(w);
-            }
+            WebCache2 = null;
+            WebCache2 = XML.GetWebsiteFilters();
+
+            GlobalFilters = null;
+            GlobalFilters = XML.GetGlobalFilters();
         }
 
         private void LoginBtn_Click(object sender, EventArgs e)
