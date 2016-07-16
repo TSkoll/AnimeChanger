@@ -52,32 +52,6 @@ namespace AnimeChanger
             }
         }
 
-        internal static IEnumerable<Website> ReadXML()
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(Path.Combine(FolderPath, "ani.xml"));
-
-            XmlNode root = doc.SelectSingleNode("root");
-            XmlNodeList nl = root.ChildNodes;
-
-            foreach (XmlNode n in nl)
-            {
-                var w = new Website();
-                List<string> filters = new List<string>();
-
-                w.Keyword = n.Attributes["keyword"].InnerText;
-
-                XmlNodeList nl2 = n.ChildNodes;
-                foreach (XmlNode n2 in nl2)
-                {
-                    filters.Add(n2.InnerText);
-                }
-
-                w.RemoveStrings = filters.ToArray();
-                yield return w;
-            }
-        }
-
         /// <summary>
         /// Reads login data from XML (stored in base64) and decrypts it to plain text login data.
         /// </summary>
