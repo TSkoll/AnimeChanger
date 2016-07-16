@@ -29,9 +29,9 @@ namespace AnimeChanger.Ani
         internal static string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DoubleKilled_AniChanger");
 
         /// <summary>
-        /// 
+        /// Gets global filters from ani.xml.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An array of Filter, containing filtering information.</returns>
         internal static Filter[] GetGlobalFilters()
         {
             List<Filter> retList = new List<Filter>();
@@ -44,40 +44,28 @@ namespace AnimeChanger.Ani
             if (GlobalFilterCont.ChildNodes == null) // If there are no Global filters
                 return null;
 
-            foreach (XmlNode node in GlobalFilterCont.ChildNodes)
+            foreach (XmlNode n in GlobalFilterCont.ChildNodes)
             {
-                if (node.Name == "Filter")
+                if (n.Name == "Filter")
                 {
                     BasicFilter filter = new BasicFilter();
-                    //filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
 
-                    if (node.Attributes != null)
-                        if (node.Attributes["Keyword"] != null)
-                            filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
-                        else
-                            filter.Keyword = null;
-                    else
-                        filter.Keyword = null;
+                    filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                    filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
-                    filter.FilterWord = node.InnerText;
+                    filter.FilterWord = n.InnerText;
 
                     retList.Add(filter);
                 }
-                else if (node.Name == "Replace")
+                else if (n.Name == "Replace")
                 {
                     Replace filter = new Replace();
-                    //filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
 
-                    if (node.Attributes != null)
-                        if (node.Attributes["Keyword"] != null)
-                            filter.Keyword = node.Attributes["Keyword"].InnerText ?? null;
-                        else
-                            filter.Keyword = null;
-                    else
-                        continue;
+                    filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                    filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
-                    filter.From = node.Attributes["From"].InnerText;
-                    filter.To = node.InnerText;
+                    filter.From = n.Attributes["From"].InnerText;
+                    filter.To = n.InnerText;
 
                     retList.Add(filter);
                 }
@@ -87,12 +75,12 @@ namespace AnimeChanger.Ani
         }
 
         /// <summary>
-        /// 
+        /// Gets website filters from ani.xml.
         /// </summary>
-        /// <returns></returns>
-        internal static Website2[] GetWebsiteFilters()
+        /// <returns>An array of Website, contains filtering information for every read website filter.</returns>
+        internal static Website[] GetWebsiteFilters()
         {
-            List<Website2> retList = new List<Website2>();
+            List<Website> retList = new List<Website>();
 
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.Combine(FolderPath, "ani.xml"));
@@ -104,7 +92,7 @@ namespace AnimeChanger.Ani
 
             foreach (XmlNode node in WebsiteFilterCont.ChildNodes)
             {
-                Website2 web = new Website2();
+                Website web = new Website();
                 web.Keyword = node.Attributes["Keyword"].InnerText; // Must have Keyword
 
                 if (node.Attributes["Blacklist"] != null)
@@ -192,7 +180,12 @@ namespace AnimeChanger.Ani
             return retList.ToArray();
         }
 
-
+        /// <summary>
+        /// Tries to get an attribute from XML element.
+        /// </summary>
+        /// <param name="AttributeCollection">Attribute collection from where the attribute is gotten.</param>
+        /// <param name="Attribute">Attribute name.</param>
+        /// <returns>Content of the attribute.</returns>
         private static string GetAttribute(XmlAttributeCollection AttributeCollection, string Attribute)
         {
             if (AttributeCollection != null)

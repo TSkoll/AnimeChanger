@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnimeChanger
+﻿namespace AnimeChanger
 {
+    /// <summary>
+    /// Class structure for supported browsers.
+    /// </summary>
     public class Browser
     {
         public string ProcessName { get; set; }

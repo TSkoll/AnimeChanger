@@ -28,26 +28,19 @@ namespace AnimeChanger
         string lastTitle = null;
 
         /// <summary>
-        /// List of AnimeChanger.Website(s) loaded to memory.
-        /// </summary>
-        //List<Website> WebCache = new List<Website>();
-
-        /// <summary>
-        /// TODOS
+        /// An array of global filters.
         /// </summary>
         Filter[] GlobalFilters;
 
         /// <summary>
-        /// TODO
+        /// An array of website filters.
         /// </summary>
-        Website2[] WebCache2;
+        Website[] WebCache2;
 
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
         DiscordClient Client;
-
-        byte ResetInt = 0;
 
         public MainForm()
         {
@@ -68,7 +61,7 @@ namespace AnimeChanger
             Secrets sec = secrets;
             Thread DiscordThread = new Thread(() =>
             {
-                System.Timers.Timer CheckTimer = new System.Timers.Timer(15000);
+                System.Timers.Timer CheckTimer = new System.Timers.Timer(7500);
 
                 Client = new DiscordClient();
 
@@ -111,7 +104,7 @@ namespace AnimeChanger
         /// </summary>
         /// <param name="Processes">System.Tuple of Browser and Process, browser processes currently running.</param>
         /// <returns>System.Tuple of Browser, Process, Website; Everything you can gather from scraping a thread.</returns>
-        public Tuple<Browser, Process, Website2> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
+        public Tuple<Browser, Process, Website> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
         {
             foreach (var pair in Processes)
             {
@@ -122,7 +115,7 @@ namespace AnimeChanger
                             continue;
 
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
-                        return new Tuple<Browser, Process, Website2>(pair.Item1, pair.Item2, w);
+                        return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
                 }
             }
             return null;
@@ -161,7 +154,7 @@ namespace AnimeChanger
         /// <param name="usedBrowser">AnimeChanger.Browser, browser thread where the title was gathered</param>
         /// <param name="usedSite">AnimeChanger.Website, website where the anime is being watched</param>
         /// <returns>System.String, parsed string</returns>
-        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website2 usedSite)
+        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
         {
             var retString = fullTitle;
             foreach (string s in usedBrowser.RemoveBrowserTitles)
@@ -205,6 +198,10 @@ namespace AnimeChanger
             return retString;
         }
 
+        /// <summary>
+        /// Passes login information from LoginForm to DiscordThread.
+        /// </summary>
+        /// <param name="sec">AnimeChanger.Secrets, login information.</param>
         public void PassSecrets(Secrets sec)
         {
             StartClient(sec);
@@ -244,6 +241,10 @@ namespace AnimeChanger
         #endregion
 
         #region Cross Thread Talking
+        /// <summary>
+        /// Changes the text on UI's TextBox.
+        /// </summary>
+        /// <param name="text">Text that is set.</param>
         internal void ChangeTextboxText(string text)
         {
             TitleBox.Invoke((MethodInvoker)delegate {
@@ -251,6 +252,10 @@ namespace AnimeChanger
             });
         }
 
+        /// <summary>
+        /// Changes the text on UI's Status label.
+        /// </summary>
+        /// <param name="text">Text that is set.</param>
         internal void ChangeStatusLabel(string text)
         {
             StatusLabel.Invoke((MethodInvoker)delegate {
