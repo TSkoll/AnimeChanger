@@ -30,17 +30,20 @@ namespace AnimeChanger
         /// <summary>
         /// An array of global filters.
         /// </summary>
-        Filter[] GlobalFilters;
+        public Filter[] GlobalFilters;
 
         /// <summary>
         /// An array of website filters.
         /// </summary>
-        Website[] WebCache2;
+        public Website[] WebCache2;
 
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
-        DiscordClient Client;
+        internal DiscordClient Client;
+
+        private byte RetryInt = 0;
+
 
         public MainForm()
         {
@@ -227,7 +230,21 @@ namespace AnimeChanger
             var rightProcess = GetKeywordProcess(BrowserProcesses);
 
             if (rightProcess == null)
+            {
+                if (RetryInt >= 3)
+                {
+                    if (lastTitle != null)
+                    {
+                        lastTitle = null;
+                        Client.SetGame(null);
+                    }
+
+                    RetryInt = 3;
+                }
+
+                RetryInt++;
                 return;
+            }
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
 
