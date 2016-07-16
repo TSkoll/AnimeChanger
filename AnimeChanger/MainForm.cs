@@ -235,8 +235,9 @@ namespace AnimeChanger
                 {
                     if (lastTitle != null)
                     {
-                        lastTitle = null;
+                        ChangeTextboxText("");
                         Client.SetGame(null);
+                        lastTitle = null;
                     }
 
                     RetryInt = 3;
@@ -244,6 +245,10 @@ namespace AnimeChanger
 
                 RetryInt++;
                 return;
+            }
+            else
+            {
+                RetryInt = 0;
             }
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
