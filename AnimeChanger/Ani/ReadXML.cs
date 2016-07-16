@@ -118,15 +118,9 @@ namespace AnimeChanger.Ani
                     if (n.Name == "Replace")
                     {
                         Replace filter = new Replace();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
-                        else
-                            continue;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
                         filter.From = n.Attributes["From"].InnerText;
                         filter.To = n.InnerText;
@@ -136,15 +130,9 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveFromStart")
                     {
                         RemoveFromStart filter = new RemoveFromStart();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
-                        else
-                            filter.Keyword = null;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
                         filter.Char = n.InnerText.ToCharArray()[0];
 
@@ -153,15 +141,9 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveFromChar")
                     {
                         RemoveFromChar filter = new RemoveFromChar();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
-                        else
-                            filter.Keyword = null;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
                         filter.Char = n.InnerText.ToCharArray()[0];
 
@@ -170,15 +152,9 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "RemoveInBetween")
                     {
                         RemoveInBetween filter = new RemoveInBetween();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
-                        else
-                            continue;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
                         filter.FirstChar = n.Attributes["FirstChar"].InnerText.ToCharArray()[0];
                         filter.LastChar = n.InnerText.ToCharArray()[0];
@@ -188,23 +164,10 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "Filter")
                     {
                         BasicFilter filter = new BasicFilter();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                        {
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
-                            if (n.Attributes["Blacklist"] != null)
-                                filter.Blacklist = n.Attributes["Blacklist"].InnerText ?? null;
-                        }
-                        else
-                        {
-                            filter.Keyword = null;
-                            filter.Blacklist = null;
-                        }
 
                         filter.FilterWord = n.InnerText;
 
@@ -213,15 +176,9 @@ namespace AnimeChanger.Ani
                     else if (n.Name == "Add")
                     {
                         BasicAdd filter = new BasicAdd();
-                        //filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
 
-                        if (n.Attributes != null)
-                            if (n.Attributes["Keyword"] != null)
-                                filter.Keyword = n.Attributes["Keyword"].InnerText ?? null;
-                            else
-                                filter.Keyword = null;
-                        else
-                            filter.Keyword = null;
+                        filter.Keyword = GetAttribute(n.Attributes, "Keyword") ?? null;
+                        filter.Blacklist = GetAttribute(n.Attributes, "Blacklist") ?? null;
 
                         filter.AddWord = n.InnerText;
 
@@ -233,6 +190,22 @@ namespace AnimeChanger.Ani
             }
 
             return retList.ToArray();
+        }
+
+
+        private static string GetAttribute(XmlAttributeCollection AttributeCollection, string Attribute)
+        {
+            if (AttributeCollection != null)
+            {
+                if (AttributeCollection[Attribute] != null)
+                {
+                    return AttributeCollection[Attribute].InnerText ?? null;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
         }
     }
 }
