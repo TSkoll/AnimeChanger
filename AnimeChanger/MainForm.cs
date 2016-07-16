@@ -166,6 +166,10 @@ namespace AnimeChanger
             {
                 foreach (Filter filter in GlobalFilters)
                 {
+                    if (filter.Blacklist != null)
+                        if (fullTitle.ToLower().Contains(filter.Blacklist.ToLower()))
+                            continue;
+
                     if (filter.Keyword != null)
                     {
                         if (fullTitle.ToLower().Contains(filter.Keyword.ToLower()))
