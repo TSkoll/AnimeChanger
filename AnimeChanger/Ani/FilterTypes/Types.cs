@@ -89,7 +89,7 @@ namespace AnimeChanger.Ani.FilterTypes
 
         public string Parse(string Title)
         {
-            return Title.Replace(FilterWord, "");
+            return Title.Replace(FilterWord, "╚");
         }
     }
 
