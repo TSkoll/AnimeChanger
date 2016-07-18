@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.titleLabel = new MetroFramework.Controls.MetroLabel();
+            this.LoginBtn = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
             // 
             // metroLabel1
@@ -44,25 +45,37 @@
             this.metroLabel1.Text = "Currently watching";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // metroLabel2
+            // titleLabel
             // 
-            this.metroLabel2.AutoSize = true;
-            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel2.Location = new System.Drawing.Point(24, 47);
-            this.metroLabel2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(222, 25);
-            this.metroLabel2.TabIndex = 1;
-            this.metroLabel2.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
-            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.titleLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.titleLabel.Location = new System.Drawing.Point(24, 47);
+            this.titleLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(222, 25);
+            this.titleLabel.TabIndex = 1;
+            this.titleLabel.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
+            this.titleLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // LoginBtn
+            // 
+            this.LoginBtn.Location = new System.Drawing.Point(24, 84);
+            this.LoginBtn.Name = "LoginBtn";
+            this.LoginBtn.Size = new System.Drawing.Size(75, 23);
+            this.LoginBtn.TabIndex = 2;
+            this.LoginBtn.Text = "Log in";
+            this.LoginBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.LoginBtn.UseSelectable = true;
+            this.LoginBtn.Click += new System.EventHandler(this.LoginBtn_Click);
             // 
             // MainFormMetro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 101);
-            this.Controls.Add(this.metroLabel2);
+            this.ClientSize = new System.Drawing.Size(450, 130);
+            this.Controls.Add(this.LoginBtn);
+            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.metroLabel1);
             this.DisplayHeader = false;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -75,6 +88,7 @@
             this.Style = MetroFramework.MetroColorStyle.Magenta;
             this.Text = "AnimeChanger";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormMetro_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -83,6 +97,7 @@
         #endregion
 
         private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private MetroFramework.Controls.MetroLabel titleLabel;
+        private MetroFramework.Controls.MetroButton LoginBtn;
     }
 }
