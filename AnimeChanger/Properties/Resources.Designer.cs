@@ -62,12 +62,16 @@ namespace AnimeChanger.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Root&gt;
-        ///	&lt;GlobalFilters /&gt;
-        ///	&lt;WebsiteFilters&gt;
-        ///		&lt;Website Keyword=&quot;crunchyroll - watch&quot;&gt;
-        ///			&lt;Filter&gt;Crunchyroll - Watch &lt;/Filter&gt;
-        ///		&lt;/Website&gt;
-        ///	&lt;/WebsiteFilters&gt;
+        ///  &lt;GlobalFilters /&gt;
+        ///  &lt;WebsiteFilters&gt;
+        ///    &lt;Website Keyword=&quot;crunchyroll - watch&quot;&gt;
+        ///      &lt;Filter&gt;Crunchyroll - Watch &lt;/Filter&gt;
+        ///    &lt;/Website&gt;
+        ///    &lt;Website Keyword=&quot;online in high quality&quot;&gt;
+        ///      &lt;Filter&gt;online in high quality&lt;/Filter&gt;
+        ///      &lt;Filter&gt; - Watch &lt;/Filter&gt;
+        ///    &lt;/Website&gt;
+        ///  &lt;/WebsiteFilters&gt;
         ///&lt;/Root&gt;.
         /// </summary>
         internal static string ani {
