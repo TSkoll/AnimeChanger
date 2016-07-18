@@ -351,7 +351,10 @@ namespace AnimeChanger
         private void Client_Closing(object sender, FormClosingEventArgs e)
         {
             if (Client != null)
+            {
+                Client.SetGame(null);
                 Client.Disconnect();
+            }
         }
         #endregion
     }
