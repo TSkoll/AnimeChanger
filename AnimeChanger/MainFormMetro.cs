@@ -116,7 +116,7 @@ namespace AnimeChanger
         /// <param name="sec">AnimeChanger.Secrets, login information.</param>
         public void PassSecrets(Secrets sec)
         {
-            //StartClient(sec);
+            StartClient(sec);
         }
         #endregion
 
