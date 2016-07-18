@@ -1,41 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
-
-/* <root>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- *  <website keyword="crunchyroll">
- *      <filter>crunchyroll - watch</filter>
- *      <filter> - mozilla firefox</filter>
- *  </website>
- * </root>
- */
 
 namespace AnimeChanger
 {
