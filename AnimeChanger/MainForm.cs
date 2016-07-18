@@ -81,6 +81,10 @@ namespace AnimeChanger
                     {
                         await Client.Connect(sec.email, sec.password);
                         TimerCheck();
+
+                        LoginBtn.Invoke((MethodInvoker)delegate() {
+                            LoginBtn.Enabled = false;
+                        });
                     });
                 }
                 catch (Discord.Net.HttpException ex)
@@ -202,6 +206,8 @@ namespace AnimeChanger
                     retString = filter.Parse(retString);
             }
 
+            retString = retString.Remove(retString.IndexOf("╚"), retString.LastIndexOf("╚") - retString.IndexOf("╚") + 1);
+
             return retString;
         }
 
@@ -302,6 +308,9 @@ namespace AnimeChanger
                         LoginBtn.Text = "Log in";
                         LoginBtn.Enabled = true;
                         LoginBtn_Click(this, new EventArgs());
+
+                        stop_police.Stop();
+                        stop_police.Dispose();
                     });
                 });
                 stop_police.Start();
