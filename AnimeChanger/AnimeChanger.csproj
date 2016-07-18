@@ -126,6 +126,7 @@
     <Compile Include="MainFormMetro.Designer.cs">
       <DependentUpon>MainFormMetro.cs</DependentUpon>
     </Compile>
+    <Compile Include="MalWrapper.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
