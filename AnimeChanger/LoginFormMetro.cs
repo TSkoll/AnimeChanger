@@ -7,25 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using MetroFramework.Forms;
 
 namespace AnimeChanger
 {
-    public partial class MainFormMetro : MetroForm
+    public partial class LoginFormMetro : MetroForm
     {
-        public MainFormMetro()
+        private ILogin CallingControl;
+
+        public LoginFormMetro(ILogin callingControl)
         {
             InitializeComponent();
+            CallingControl = callingControl;
         }
 
-        #region events
-        private void metroButton1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            LoginFormMetro login = new LoginFormMetro(this);
-        }
-        #endregion
 
-        #region
-        #endregion
+        }
     }
 }

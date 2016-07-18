@@ -30,6 +30,7 @@
         {
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
             // 
             // metroLabel1
@@ -57,11 +58,22 @@
             this.metroLabel2.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
             this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // metroButton1
+            // 
+            this.metroButton1.Location = new System.Drawing.Point(24, 84);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(75, 23);
+            this.metroButton1.TabIndex = 2;
+            this.metroButton1.Text = "Log in";
+            this.metroButton1.UseSelectable = true;
+            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
+            // 
             // MainFormMetro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 101);
+            this.ClientSize = new System.Drawing.Size(450, 130);
+            this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
             this.DisplayHeader = false;
@@ -84,5 +96,6 @@
 
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroLabel metroLabel2;
+        private MetroFramework.Controls.MetroButton metroButton1;
     }
 }
