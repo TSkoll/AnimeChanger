@@ -313,22 +313,34 @@ namespace AnimeChanger
         #region Events
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+            try
             {
-                LoginFormMetro login = new LoginFormMetro(this);
-                login.Show();
-            }
-            else
-            {
-                Secrets secrets = Misc.ReadSecrets();
-                if (secrets != null)
-                    StartClient(secrets);
+                LoginBtn.Enabled = false;
+                LoginBtn.Text = "Logging in...";
+                if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+                {
+                    LoginFormMetro login = new LoginFormMetro(this);
+                    login.Show();
+                }
                 else
                 {
-                    File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
-                    RetryLogin();
+                    Secrets secrets = Misc.ReadSecrets();
+                    if (secrets != null)
+                        StartClient(secrets);
+                    else
+                    {
+                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                        RetryLogin();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong lol: " + ex.InnerException, "Error lol");
+                LoginBtn.Enabled = true;
+                LoginBtn.Text = "Log in";
+            }
+            
         }
 
         private void MainFormMetro_FormClosing(object sender, FormClosingEventArgs e)
