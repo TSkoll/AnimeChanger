@@ -22,9 +22,17 @@ namespace AnimeChanger
             CallingControl = callingControl;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void metroButton1_Click(object sender, EventArgs e)
         {
-
+            Secrets s = new Secrets();
+            s.email = eBox.Text;
+            s.password = pBox.Text;
+            if (rBox.Checked)
+            {
+                Misc.WriteSecrets(s);
+            }
+            CallingControl.PassSecrets(s);
+            Close();
         }
     }
 }
