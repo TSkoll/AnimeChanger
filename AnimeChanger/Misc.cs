@@ -88,13 +88,33 @@ namespace AnimeChanger
             return filter.Apply(source);
         }
 
-        //internal static Bitmap CropRect(Bitmap source)
-        //{
+        /// <summary>
+        /// Crops an image from a random height.
+        /// </summary>
+        /// <param name="source">Source image which is cropped.</param>
+        /// <returns>Cropped image.</returns>
+        internal static Bitmap CropBitmap(Bitmap source)
+        {
+            Random r = new Random();
+            int pos = r.Next(0, source.Height - 174);
 
-        //    Rectangle SourceRect = new Rectangle(0, 0, source.Width, 104);
+            Crop filter = new Crop(new Rectangle(0, pos, source.Width, 174));
 
+            return filter.Apply(source);
+        }
 
-        //}
+        /// <summary>
+        /// Changes the brightness of a bitmap
+        /// </summary>
+        /// <param name="source">Source image</param>
+        /// <param name="amount">Amount [-255, 255], negative values darken and positive values brighten the image</param>
+        /// <returns>Bitmap with brightness altered</returns>
+        internal static Bitmap ChangeBitmapBrightness(Bitmap source, int amount)
+        {
+            BrightnessCorrection filter = new BrightnessCorrection(amount);
+
+            return filter.Apply(source);
+        }
         #endregion
     }
 }

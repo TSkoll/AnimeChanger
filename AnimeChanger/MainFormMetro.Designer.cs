@@ -46,24 +46,27 @@
             this.metroLabel1.TabIndex = 0;
             this.metroLabel1.Text = "Currently watching";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel1.UseCustomBackColor = true;
             // 
             // titleLabel
             // 
-            this.titleLabel.AutoSize = true;
             this.titleLabel.BackColor = System.Drawing.Color.Transparent;
             this.titleLabel.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.titleLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.titleLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.titleLabel.Location = new System.Drawing.Point(24, 47);
             this.titleLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(222, 25);
+            this.titleLabel.Size = new System.Drawing.Size(402, 104);
             this.titleLabel.TabIndex = 1;
             this.titleLabel.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
             this.titleLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.titleLabel.UseCustomBackColor = true;
+            this.titleLabel.UseCustomForeColor = true;
             // 
             // LoginBtn
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(24, 84);
+            this.LoginBtn.Location = new System.Drawing.Point(21, 154);
             this.LoginBtn.Name = "LoginBtn";
             this.LoginBtn.Size = new System.Drawing.Size(75, 23);
             this.LoginBtn.TabIndex = 2;
@@ -76,7 +79,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(0, 26);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(450, 104);
+            this.pictureBox1.Size = new System.Drawing.Size(450, 174);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
@@ -85,7 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 130);
+            this.ClientSize = new System.Drawing.Size(450, 200);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.metroLabel1);

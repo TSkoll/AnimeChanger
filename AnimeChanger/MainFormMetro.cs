@@ -59,6 +59,22 @@ namespace AnimeChanger
 
             GlobalFilters = XML.GetGlobalFilters();
             WebCache2 = XML.GetWebsiteFilters();
+
+            pictureBox1.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2, 8), -130);
+
+            #region There's probably a better way of doing this but I'm too lazy
+            var pos = PointToScreen(metroLabel1.Location);
+            pos = pictureBox1.PointToClient(pos);
+            metroLabel1.Parent = pictureBox1;
+            metroLabel1.Location = pos;
+            metroLabel1.BackColor = System.Drawing.Color.Transparent;
+
+            pos = PointToScreen(titleLabel.Location);
+            pos = pictureBox1.PointToClient(pos);
+            titleLabel.Parent = pictureBox1;
+            titleLabel.Location = pos;
+            titleLabel.BackColor = System.Drawing.Color.Transparent;
+            #endregion
         }
 
         #region Discord.net
