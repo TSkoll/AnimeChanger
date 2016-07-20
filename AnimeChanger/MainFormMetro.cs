@@ -18,6 +18,7 @@ namespace AnimeChanger
 {
     public partial class MainFormMetro : MetroForm, ILogin
     {
+        #region Variables
         /// <summary>
         /// List of supported browsers.
         /// </summary>
@@ -49,7 +50,7 @@ namespace AnimeChanger
         internal DiscordClient Client;
 
         private byte RetryInt = 0;
-
+        #endregion
 
         public MainFormMetro()
         {

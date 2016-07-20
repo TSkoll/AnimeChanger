@@ -63,6 +63,7 @@
             this.titleLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.titleLabel.UseCustomBackColor = true;
             this.titleLabel.UseCustomForeColor = true;
+            this.titleLabel.WrapToLine = true;
             // 
             // LoginBtn
             // 
