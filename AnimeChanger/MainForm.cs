@@ -16,13 +16,13 @@ using AnimeChanger.Ani;
 
 namespace AnimeChanger
 {
-    public partial class MainFormMetro : MetroForm, ILogin
+    public partial class MainForm : MetroForm
     {
         #region Variables
         /// <summary>
         /// List of supported browsers.
         /// </summary>
-        public Browser[] SupportedBrowsers =
+        public Browser[] supportedBrowsers =
         {
             new Browser { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } },
             new Browser { ProcessName = "firefox", RemoveBrowserTitles = new string[] { " - Mozilla Firefox", " - Firefox Developer Edition" } },
@@ -32,36 +32,38 @@ namespace AnimeChanger
         /// <summary>
         /// Last found title
         /// </summary>
-        string lastTitle = null;
+        public string lastTitle = null;
 
         /// <summary>
         /// An array of global filters.
         /// </summary>
-        public Filter[] GlobalFilters;
+        public Filter[] globalFilters;
 
         /// <summary>
         /// An array of website filters.
         /// </summary>
-        public Website[] WebCache2;
+        public Website[] webCache;
 
         /// <summary>
         /// Used for disconnecting from main thread.
         /// </summary>
-        internal DiscordClient Client;
+        internal DiscordClient client;
 
-        private byte RetryInt = 0;
+        internal MalWrapper wrapper;
+
+        private byte _retryInt = 0;
         #endregion
 
-        public MainFormMetro()
+        public MainForm()
         {
             InitializeComponent();
 
             Misc.CheckFolder();
 
-            GlobalFilters = XML.GetGlobalFilters();
-            WebCache2 = XML.GetWebsiteFilters();
+            globalFilters = XML.GetGlobalFilters();
+            webCache = XML.GetWebsiteFilters();
 
-            pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
+            // pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
 
             #region There's probably a better way of doing this but I'm too lazy
             var pos = PointToScreen(lCurrent.Location);
@@ -82,16 +84,16 @@ namespace AnimeChanger
         /// <summary>
         /// Starts Discord.DiscordClient, logs in and starts the check loop.
         /// </summary>
-        public void StartClient(Secrets secrets)
+        public void StartClient(Secrets sec)
         {
-            Secrets sec = secrets;
+            Secrets buffer = sec;
             Thread DiscordThread = new Thread(() =>
             {
                 System.Timers.Timer CheckTimer = new System.Timers.Timer(7500);
 
-                Client = new DiscordClient();
+                client = new DiscordClient();
 
-                Client.Ready += (s, e) =>
+                client.Ready += (s, e) =>
                 {
                     CheckTimer.Elapsed += (s1, e1) => TimerCheck();
                     CheckTimer.Start();
@@ -99,9 +101,9 @@ namespace AnimeChanger
 
                 try
                 {
-                    Client.ExecuteAndWait(async () =>
+                    client.ExecuteAndWait(async () =>
                     {
-                        await Client.Connect(sec.email, sec.password);
+                        await client.Connect(buffer.id, buffer.pass);
                         TimerCheck();
 
                         bLogin.Invoke((MethodInvoker)delegate ()
@@ -148,7 +150,7 @@ namespace AnimeChanger
         {
             foreach (var pair in Processes)
             {
-                foreach (var w in WebCache2)
+                foreach (var w in webCache)
                 {
                     if (w.Blacklist != null)
                         if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Blacklist.ToLower()))
@@ -171,7 +173,7 @@ namespace AnimeChanger
 
             List<Tuple<Browser, Process>> ret = new List<Tuple<Browser, Process>>();
 
-            foreach (var b in SupportedBrowsers)
+            foreach (var b in supportedBrowsers)
             {
                 foreach (var p in processes)
                 {
@@ -202,9 +204,9 @@ namespace AnimeChanger
                 retString = retString.Replace(s, "");
             }
 
-            if (GlobalFilters != null)
+            if (globalFilters != null)
             {
-                foreach (Filter filter in GlobalFilters)
+                foreach (Filter filter in globalFilters)
                 {
                     if (filter.Blacklist != null)
                         if (fullTitle.ToLower().Contains(filter.Blacklist.ToLower()))
@@ -261,7 +263,7 @@ namespace AnimeChanger
 
             if (rightProcess == null)
             {
-                if (RetryInt >= 3)
+                if (_retryInt >= 3)
                 {
                     if (lastTitle != null)
                     {
@@ -269,15 +271,15 @@ namespace AnimeChanger
                         lastTitle = null;
                     }
 
-                    RetryInt = 3;
+                    _retryInt = 3;
                 }
 
-                RetryInt++;
+                _retryInt++;
                 return;
             }
             else
             {
-                RetryInt = 0;
+                _retryInt = 0;
             }
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
@@ -301,22 +303,23 @@ namespace AnimeChanger
             {
                 lTitle.Text = text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
             });
-            Client.SetGame(text);
+            client.SetGame(text);
         }
 
         internal void RetryLogin()
         {
             Invoke((MethodInvoker)delegate
             {
-                bLogin.Text = "Please wait";
+                bLogin.Text = "Please wait...";
                 bLogin.Enabled = false;
+
                 System.Timers.Timer stop_police = new System.Timers.Timer(5000);
                 stop_police.AutoReset = false;
                 stop_police.Elapsed += (delegate {
                     bLogin.Invoke((MethodInvoker)delegate {
                         bLogin.Text = "Log in";
                         bLogin.Enabled = true;
-                        LoginBtn_Click(this, new EventArgs());
+                        bLogin_Click(this, new EventArgs());
 
                         stop_police.Stop();
                         stop_police.Dispose();
@@ -328,46 +331,92 @@ namespace AnimeChanger
         #endregion
 
         #region Events
-        private void LoginBtn_Click(object sender, EventArgs e)
+        private void bLogin_Click(object sender, EventArgs e)
         {
-            try
+            Secrets buffer = null;
+
+            bLogin.Enabled = false;
+            bLogin.Text = "Logging in...";
+
+            if (!File.Exists(Misc.DiscordData))
             {
-                bLogin.Enabled = false;
-                bLogin.Text = "Logging in...";
-                if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+                using (LoginForm login = new LoginForm("discord"))
                 {
-                    LoginFormMetro login = new LoginFormMetro(this);
-                    login.Show();
+                    login.ShowDialog();
+                    buffer = login.Sec;
+                }
+            }
+            else
+            {
+                Secrets sec = Misc.ReadSecrets("discord");
+                if (sec != null)
+                {
+                    buffer = sec;
                 }
                 else
                 {
-                    Secrets secrets = Misc.ReadSecrets();
-                    if (secrets != null)
-                        StartClient(secrets);
-                    else
-                    {
-                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
-                        RetryLogin();
-                    }
+                    File.Delete(Misc.DiscordData);
+                    RetryLogin();
                 }
             }
-            catch (Exception ex)
+
+            if (buffer != null)
+                StartClient(buffer);
+            else
             {
-                MessageBox.Show("Something went wrong lol: " + ex.InnerException, "Error lol");
                 bLogin.Enabled = true;
                 bLogin.Text = "Log in";
             }
-            
         }
 
-        private void MainFormMetro_FormClosing(object sender, FormClosingEventArgs e)
+        private void bMal_Click(object sender, EventArgs e)
         {
-            if (Client != null)
+            Secrets buffer = null;
+
+            bMal.Enabled = false;
+            bMal.Text = "Connecting...";
+
+            if (!File.Exists(Misc.MalData))
             {
-                Client.SetGame(null);
-                Client.Disconnect();
+                using (LoginForm connect = new LoginForm("mal"))
+                {
+                    connect.ShowDialog();
+                    buffer = connect.Sec;
+                }
+            }
+            else
+            {
+                Secrets sec = Misc.ReadSecrets("mal");
+                if (sec != null)
+                {
+                    buffer = sec;
+                }
+                else
+                {
+                    File.Delete(Misc.MalData);
+                    bMal_Click(this, new EventArgs());
+                }
+            }
+
+            if (buffer != null)
+            {
+                wrapper = new MalWrapper(buffer.id, buffer.pass);
+            }
+            else
+            {
+                bMal.Enabled = true;
+                bMal.Text = "Connect with MAL";
             }
         }
-        #endregion
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (client != null)
+            {
+                client.SetGame(null);
+                client.Disconnect();
+            }
+        }
+        #endregion        
     }
 }

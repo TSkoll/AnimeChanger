@@ -2,7 +2,7 @@
 {
     public class Secrets
     {
-        public string email { get; set; }
-        public string password { get; set; }
+        public string id { get; set; }
+        public string pass { get; set; }
     }
 }

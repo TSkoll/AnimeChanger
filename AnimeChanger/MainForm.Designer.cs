@@ -1,6 +1,6 @@
 ﻿namespace AnimeChanger
 {
-    partial class MainFormMetro
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -75,7 +75,7 @@
             this.bLogin.Text = "Log in";
             this.bLogin.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.bLogin.UseSelectable = true;
-            this.bLogin.Click += new System.EventHandler(this.LoginBtn_Click);
+            this.bLogin.Click += new System.EventHandler(this.bLogin_Click);
             // 
             // pCover
             // 
@@ -95,8 +95,9 @@
             this.bMal.Text = "Connect with MAL";
             this.bMal.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.bMal.UseSelectable = true;
+            this.bMal.Click += new System.EventHandler(this.bMal_Click);
             // 
-            // MainFormMetro
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -110,14 +111,14 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.MaximizeBox = false;
-            this.Name = "MainFormMetro";
+            this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(18, 30, 18, 20);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.None;
             this.Style = MetroFramework.MetroColorStyle.Magenta;
             this.Text = "AnimeChanger";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormMetro_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pCover)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
