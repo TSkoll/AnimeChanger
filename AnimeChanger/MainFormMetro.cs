@@ -60,7 +60,7 @@ namespace AnimeChanger
             GlobalFilters = XML.GetGlobalFilters();
             WebCache2 = XML.GetWebsiteFilters();
 
-            pictureBox1.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2, 8), -130);
+            pictureBox1.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
 
             #region There's probably a better way of doing this but I'm too lazy
             var pos = PointToScreen(metroLabel1.Location);

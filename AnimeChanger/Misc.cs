@@ -107,13 +107,15 @@ namespace AnimeChanger
         /// Changes the brightness of a bitmap
         /// </summary>
         /// <param name="source">Source image</param>
-        /// <param name="amount">Amount [-255, 255], negative values darken and positive values brighten the image</param>
+        /// <param name="BrightnessAmount">Amount [-255, 255], negative values darken and positive values brighten the image</param>
+        /// <param name="ContrastAmount">Amount [-255, 255]</param>
         /// <returns>Bitmap with brightness altered</returns>
-        internal static Bitmap ChangeBitmapBrightness(Bitmap source, int amount)
+        internal static Bitmap ChangeBitmapBrightness(Bitmap source, int BrightnessAmount, int ContrastAmount)
         {
-            BrightnessCorrection filter = new BrightnessCorrection(amount);
+            BrightnessCorrection filter = new BrightnessCorrection(BrightnessAmount);
+            ContrastCorrection filter2 = new ContrastCorrection(ContrastAmount);
 
-            return filter.Apply(source);
+            return filter2.Apply(filter.Apply(source));
         }
         #endregion
     }
