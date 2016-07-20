@@ -28,72 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.titleLabel = new MetroFramework.Controls.MetroLabel();
-            this.LoginBtn = new MetroFramework.Controls.MetroButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.lCurrent = new MetroFramework.Controls.MetroLabel();
+            this.lTitle = new MetroFramework.Controls.MetroLabel();
+            this.bLogin = new MetroFramework.Controls.MetroButton();
+            this.pCover = new System.Windows.Forms.PictureBox();
+            this.bMal = new MetroFramework.Controls.MetroButton();
+            ((System.ComponentModel.ISupportInitialize)(this.pCover)).BeginInit();
             this.SuspendLayout();
             // 
-            // metroLabel1
+            // lCurrent
             // 
-            this.metroLabel1.AutoSize = true;
-            this.metroLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.metroLabel1.Location = new System.Drawing.Point(24, 28);
-            this.metroLabel1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(117, 19);
-            this.metroLabel1.TabIndex = 0;
-            this.metroLabel1.Text = "Currently watching";
-            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel1.UseCustomBackColor = true;
+            this.lCurrent.AutoSize = true;
+            this.lCurrent.BackColor = System.Drawing.Color.Transparent;
+            this.lCurrent.Location = new System.Drawing.Point(24, 28);
+            this.lCurrent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lCurrent.Name = "lCurrent";
+            this.lCurrent.Size = new System.Drawing.Size(117, 19);
+            this.lCurrent.TabIndex = 0;
+            this.lCurrent.Text = "Currently watching";
+            this.lCurrent.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lCurrent.UseCustomBackColor = true;
             // 
-            // titleLabel
+            // lTitle
             // 
-            this.titleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.titleLabel.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.titleLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.titleLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.titleLabel.Location = new System.Drawing.Point(24, 47);
-            this.titleLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(402, 104);
-            this.titleLabel.TabIndex = 1;
-            this.titleLabel.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
-            this.titleLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.titleLabel.UseCustomBackColor = true;
-            this.titleLabel.UseCustomForeColor = true;
-            this.titleLabel.WrapToLine = true;
+            this.lTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lTitle.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.lTitle.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.lTitle.ForeColor = System.Drawing.SystemColors.Control;
+            this.lTitle.Location = new System.Drawing.Point(24, 47);
+            this.lTitle.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lTitle.Name = "lTitle";
+            this.lTitle.Size = new System.Drawing.Size(402, 104);
+            this.lTitle.TabIndex = 1;
+            this.lTitle.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
+            this.lTitle.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lTitle.UseCustomBackColor = true;
+            this.lTitle.UseCustomForeColor = true;
+            this.lTitle.WrapToLine = true;
             // 
-            // LoginBtn
+            // bLogin
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(21, 154);
-            this.LoginBtn.Name = "LoginBtn";
-            this.LoginBtn.Size = new System.Drawing.Size(75, 23);
-            this.LoginBtn.TabIndex = 2;
-            this.LoginBtn.Text = "Log in";
-            this.LoginBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.LoginBtn.UseSelectable = true;
-            this.LoginBtn.Click += new System.EventHandler(this.LoginBtn_Click);
+            this.bLogin.Location = new System.Drawing.Point(21, 154);
+            this.bLogin.Name = "bLogin";
+            this.bLogin.Size = new System.Drawing.Size(75, 23);
+            this.bLogin.TabIndex = 2;
+            this.bLogin.Text = "Log in";
+            this.bLogin.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.bLogin.UseSelectable = true;
+            this.bLogin.Click += new System.EventHandler(this.LoginBtn_Click);
             // 
-            // pictureBox1
+            // pCover
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(0, 26);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(450, 174);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            this.pCover.Location = new System.Drawing.Point(0, 26);
+            this.pCover.Name = "pCover";
+            this.pCover.Size = new System.Drawing.Size(450, 174);
+            this.pCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pCover.TabIndex = 3;
+            this.pCover.TabStop = false;
+            // 
+            // bMal
+            // 
+            this.bMal.Location = new System.Drawing.Point(297, 154);
+            this.bMal.Name = "bMal";
+            this.bMal.Size = new System.Drawing.Size(132, 23);
+            this.bMal.TabIndex = 4;
+            this.bMal.Text = "Connect with MAL";
+            this.bMal.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.bMal.UseSelectable = true;
             // 
             // MainFormMetro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 200);
-            this.Controls.Add(this.LoginBtn);
-            this.Controls.Add(this.titleLabel);
-            this.Controls.Add(this.metroLabel1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.bMal);
+            this.Controls.Add(this.bLogin);
+            this.Controls.Add(this.lTitle);
+            this.Controls.Add(this.lCurrent);
+            this.Controls.Add(this.pCover);
             this.DisplayHeader = false;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
@@ -106,7 +118,7 @@
             this.Text = "AnimeChanger";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormMetro_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pCover)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,9 +126,10 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroLabel titleLabel;
-        private MetroFramework.Controls.MetroButton LoginBtn;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private MetroFramework.Controls.MetroLabel lCurrent;
+        private MetroFramework.Controls.MetroLabel lTitle;
+        private MetroFramework.Controls.MetroButton bLogin;
+        private System.Windows.Forms.PictureBox pCover;
+        private MetroFramework.Controls.MetroButton bMal;
     }
 }

@@ -61,20 +61,20 @@ namespace AnimeChanger
             GlobalFilters = XML.GetGlobalFilters();
             WebCache2 = XML.GetWebsiteFilters();
 
-            pictureBox1.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
+            pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
 
             #region There's probably a better way of doing this but I'm too lazy
-            var pos = PointToScreen(metroLabel1.Location);
-            pos = pictureBox1.PointToClient(pos);
-            metroLabel1.Parent = pictureBox1;
-            metroLabel1.Location = pos;
-            metroLabel1.BackColor = System.Drawing.Color.Transparent;
+            var pos = PointToScreen(lCurrent.Location);
+            pos = pCover.PointToClient(pos);
+            lCurrent.Parent = pCover;
+            lCurrent.Location = pos;
+            lCurrent.BackColor = System.Drawing.Color.Transparent;
 
-            pos = PointToScreen(titleLabel.Location);
-            pos = pictureBox1.PointToClient(pos);
-            titleLabel.Parent = pictureBox1;
-            titleLabel.Location = pos;
-            titleLabel.BackColor = System.Drawing.Color.Transparent;
+            pos = PointToScreen(lTitle.Location);
+            pos = pCover.PointToClient(pos);
+            lTitle.Parent = pCover;
+            lTitle.Location = pos;
+            lTitle.BackColor = System.Drawing.Color.Transparent;
             #endregion
         }
 
@@ -104,10 +104,10 @@ namespace AnimeChanger
                         await Client.Connect(sec.email, sec.password);
                         TimerCheck();
 
-                        LoginBtn.Invoke((MethodInvoker)delegate ()
+                        bLogin.Invoke((MethodInvoker)delegate ()
                         {
-                            LoginBtn.Enabled = false;
-                            LoginBtn.Text = "Logged in";
+                            bLogin.Enabled = false;
+                            bLogin.Text = "Logged in";
                         });
                     });
                 }
@@ -297,9 +297,9 @@ namespace AnimeChanger
         #region Cross thread
         internal void ChangeGame(string text)
         {
-            titleLabel.Invoke((MethodInvoker)delegate
+            lTitle.Invoke((MethodInvoker)delegate
             {
-                titleLabel.Text = text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
+                lTitle.Text = text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
             });
             Client.SetGame(text);
         }
@@ -308,14 +308,14 @@ namespace AnimeChanger
         {
             Invoke((MethodInvoker)delegate
             {
-                LoginBtn.Text = "Please wait";
-                LoginBtn.Enabled = false;
+                bLogin.Text = "Please wait";
+                bLogin.Enabled = false;
                 System.Timers.Timer stop_police = new System.Timers.Timer(5000);
                 stop_police.AutoReset = false;
                 stop_police.Elapsed += (delegate {
-                    LoginBtn.Invoke((MethodInvoker)delegate {
-                        LoginBtn.Text = "Log in";
-                        LoginBtn.Enabled = true;
+                    bLogin.Invoke((MethodInvoker)delegate {
+                        bLogin.Text = "Log in";
+                        bLogin.Enabled = true;
                         LoginBtn_Click(this, new EventArgs());
 
                         stop_police.Stop();
@@ -332,8 +332,8 @@ namespace AnimeChanger
         {
             try
             {
-                LoginBtn.Enabled = false;
-                LoginBtn.Text = "Logging in...";
+                bLogin.Enabled = false;
+                bLogin.Text = "Logging in...";
                 if (!File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
                 {
                     LoginFormMetro login = new LoginFormMetro(this);
@@ -354,8 +354,8 @@ namespace AnimeChanger
             catch (Exception ex)
             {
                 MessageBox.Show("Something went wrong lol: " + ex.InnerException, "Error lol");
-                LoginBtn.Enabled = true;
-                LoginBtn.Text = "Log in";
+                bLogin.Enabled = true;
+                bLogin.Text = "Log in";
             }
             
         }
