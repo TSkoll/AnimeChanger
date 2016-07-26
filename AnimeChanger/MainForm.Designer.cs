@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lCurrent = new MetroFramework.Controls.MetroLabel();
             this.lTitle = new MetroFramework.Controls.MetroLabel();
             this.bLogin = new MetroFramework.Controls.MetroButton();
@@ -109,6 +110,7 @@
             this.Controls.Add(this.pCover);
             this.DisplayHeader = false;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -119,6 +121,7 @@
             this.Text = "AnimeChanger";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pCover)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

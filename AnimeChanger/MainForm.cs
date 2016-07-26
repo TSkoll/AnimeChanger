@@ -19,6 +19,12 @@ namespace AnimeChanger
     public partial class MainForm : MetroForm
     {
         #region Variables
+
+        /// <summary>
+        /// System tray icon.
+        /// </summary>
+        NotifyIcon notIcon = new NotifyIcon();
+
         /// <summary>
         /// List of supported browsers.
         /// </summary>
@@ -77,6 +83,27 @@ namespace AnimeChanger
             lTitle.Parent = pCover;
             lTitle.Location = pos;
             lTitle.BackColor = System.Drawing.Color.Transparent;
+            #endregion
+
+            #region system tray icon
+            notIcon.Icon = Properties.Resources.appicon;
+            notIcon.DoubleClick += new EventHandler(notIcon_DoubleClick);
+
+            ContextMenu trayMenu = new ContextMenu();
+            MenuItem CloseItem = new MenuItem();
+
+            trayMenu.MenuItems.AddRange(
+                new MenuItem[] { CloseItem });
+
+            CloseItem.Index = 0;
+            CloseItem.Text = "Close application";
+            CloseItem.Click += new EventHandler((s, e) => {
+                Application.Exit();
+            });
+
+            notIcon.ContextMenu = trayMenu;
+            notIcon.Text = "AnimeChanger";
+            notIcon.Visible = false;
             #endregion
         }
 
@@ -290,6 +317,9 @@ namespace AnimeChanger
             if (title != lastTitle)
             {
                 ChangeGame(title);
+                Thread changeThread = new Thread(() => {
+                    
+                });
             }
 
             lastTitle = title;
@@ -417,6 +447,34 @@ namespace AnimeChanger
                 client.Disconnect();
             }
         }
-        #endregion        
+
+        #region minimization
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == WindowState)
+            {
+                notIcon.Visible = true;
+                Hide();
+            }
+            else if (FormWindowState.Normal == WindowState)
+            {
+                notIcon.Visible = false;
+            }
+        }
+
+        private void notIcon_DoubleClick(object Sender, EventArgs e)
+        {
+            // Show the form when the user double clicks on the notify icon.
+
+            // Set the WindowState to normal if the form is minimized.
+            if (this.WindowState == FormWindowState.Minimized)
+                this.WindowState = FormWindowState.Normal;
+
+            // Activate the form.
+            this.Activate();
+            Show();
+        }
+        #endregion
+        #endregion
     }
 }

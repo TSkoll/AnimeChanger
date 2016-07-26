@@ -89,5 +89,15 @@ namespace AnimeChanger.Properties {
                 return ResourceManager.GetString("ani", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon appicon {
+            get {
+                object obj = ResourceManager.GetObject("appicon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

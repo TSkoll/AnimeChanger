@@ -60,7 +60,7 @@
             this.tEmail.SelectionStart = 0;
             this.tEmail.Size = new System.Drawing.Size(240, 23);
             this.tEmail.TabIndex = 0;
-            this.tEmail.Text = (_target == "discord") ? "Email" : "Username";
+            this.tEmail.Text = "Email";
             this.tEmail.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.tEmail.UseSelectable = true;
             this.tEmail.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
