@@ -1,29 +1,30 @@
 ﻿using System;
-using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace AnimeChanger
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : MetroForm
     {
-        private ILogin CallingControl;
+        private string _target;
+        public Secrets Sec { get; set; }
 
-        public LoginForm(ILogin callingControl)
+        public LoginForm(string target)
         {
+            _target = target;
             InitializeComponent();
-            CallingControl = callingControl;
         }
 
         private void bLogin_Click(object sender, EventArgs e)
         {
-            Secrets secrets = new Secrets();
-            secrets.email = tboxEmail.Text;
-            secrets.password = tboxPassword.Text;
-            if (chboxRemember.Checked)
-            {
-                Misc.WriteSecrets(secrets);
-            }
-            this.CallingControl.PassSecrets(secrets);
-            this.Close();
+            Secrets buffer = new Secrets();
+            buffer.id = tEmail.Text;
+            buffer.pass = tPassword.Text;
+
+            if (chRemember.Checked)
+                Misc.WriteSecrets(buffer, _target);
+
+            Sec = buffer;
+            Close();
         }
     }
 }
