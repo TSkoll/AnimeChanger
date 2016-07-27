@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using System.Drawing;
+using System.Threading.Tasks;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -14,13 +15,13 @@ namespace AnimeChanger
             client.Authenticator = new HttpBasicAuthenticator(username, password);
         }
 
-        public Bitmap GetAnimeCover(string title)
+        public async Task<Bitmap> GetAnimeCover(string title)
         {
             var request = new RestRequest("anime/search.xml", Method.GET);
             request.AddParameter("q", title);
             request.RootElement = "anime";
 
-            IRestResponse resp = client.Execute(request);
+            var resp = await client.ExecuteTaskAsync(request);
 
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(resp.Content);
