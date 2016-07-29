@@ -320,9 +320,9 @@ namespace AnimeChanger
             if (title != lastTitle)
             {
                 ChangeGame(title);
-                Thread changeThread = new Thread(() => {
-                    
-                });
+
+                var dlCover = wrapper.GetAnimeCover(title).Result;
+                pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12), -140, -10);
             }
 
             lastTitle = title;
