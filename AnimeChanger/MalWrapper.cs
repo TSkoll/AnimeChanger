@@ -23,6 +23,7 @@ namespace AnimeChanger
         public async Task<Bitmap> GetAnimeCover(string title)
         {
             var request = new RestRequest("anime/search.xml", Method.GET);
+            title = title.Replace(" ", "+");
             request.AddParameter("q", title);
             request.RootElement = "anime";
 
