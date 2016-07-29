@@ -20,6 +20,11 @@ namespace AnimeChanger
             if (!Directory.Exists(FolderPath))
             {
                 Directory.CreateDirectory(FolderPath);
+            }
+
+            var aniXml = Path.Combine(FolderPath, "ani.xml");
+            if (!File.Exists(aniXml))
+            {
                 File.WriteAllText(Path.Combine(FolderPath, "ani.xml"), Properties.Resources.ani);
             }
         }
