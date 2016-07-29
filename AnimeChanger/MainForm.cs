@@ -55,7 +55,10 @@ namespace AnimeChanger
         /// </summary>
         internal DiscordClient client;
 
-        internal MalWrapper wrapper;
+        /// <summary>
+        /// Used for calling MAL api.
+        /// </summary>
+        internal MalWrapper wrapper = new MalWrapper("animechangerbot", "iV6#mjlTIWln^&3f");
 
         private byte _retryInt = 0;
         #endregion
@@ -430,7 +433,7 @@ namespace AnimeChanger
 
             if (buffer != null)
             {
-                wrapper = new MalWrapper(buffer.id, buffer.pass);
+                wrapper.Authenticate(buffer.id, buffer.pass);
             }
             else
             {

@@ -15,6 +15,11 @@ namespace AnimeChanger
             client.Authenticator = new HttpBasicAuthenticator(username, password);
         }
 
+        public void Authenticate(string username, string password)
+        {
+            client.Authenticator = new HttpBasicAuthenticator(username, password);
+        }
+
         public async Task<Bitmap> GetAnimeCover(string title)
         {
             var request = new RestRequest("anime/search.xml", Method.GET);
