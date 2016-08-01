@@ -1,7 +1,7 @@
 <Root>
   <GlobalFilters />
   <WebsiteFilters>
-    <Website Keyword="crunchyroll - watch">
+    <Website Keyword="crunchyroll - watch" Blacklist="Anime videos and Episodes">
       <Filter>Crunchyroll - Watch </Filter>
     </Website>
     <Website Keyword="online in high quality">
