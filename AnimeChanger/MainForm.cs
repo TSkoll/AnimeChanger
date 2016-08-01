@@ -72,7 +72,7 @@ namespace AnimeChanger
             globalFilters = XML.GetGlobalFilters();
             webCache = XML.GetWebsiteFilters();
 
-            pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12));
+            //pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12));
 
             #region There's probably a better way of doing this but I'm too lazy
             var pos = PointToScreen(lCurrent.Location);
@@ -318,8 +318,8 @@ namespace AnimeChanger
             {
                 ChangeGame(title);
 
-                var dlCover = wrapper.GetAnimCoverTest(title);
-                pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12));
+                //var dlCover = wrapper.GetAnimCoverTest(title);
+                //pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12));
             }
 
             lastTitle = title;
