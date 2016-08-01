@@ -72,7 +72,7 @@ namespace AnimeChanger
             globalFilters = XML.GetGlobalFilters();
             webCache = XML.GetWebsiteFilters();
 
-            // pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12), -140, -10);
+            pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12));
 
             #region There's probably a better way of doing this but I'm too lazy
             var pos = PointToScreen(lCurrent.Location);
@@ -123,12 +123,6 @@ namespace AnimeChanger
 
                 client = new DiscordClient();
 
-                client.Ready += (s, e) =>
-                {
-                    CheckTimer.Elapsed += (s1, e1) => TimerCheck();
-                    CheckTimer.Start();
-                };
-
                 try
                 {
                     client.ExecuteAndWait(async () =>
@@ -141,6 +135,9 @@ namespace AnimeChanger
                             bLogin.Enabled = false;
                             bLogin.Text = "Logged in";
                         });
+
+                        CheckTimer.Elapsed += (s1, e1) => TimerCheck();
+                        CheckTimer.Start();
                     });
                 }
                 catch (Discord.Net.HttpException ex)

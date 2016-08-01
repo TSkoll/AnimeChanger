@@ -134,7 +134,7 @@ namespace AnimeChanger
 
         internal static Bitmap testBrightness(Bitmap source)
         {
-            Add filter = new Add(Properties.Resources.pngmask);
+            Subtract filter = new Subtract(Properties.Resources.pngmask);
             return filter.Apply(source);
         }
 
