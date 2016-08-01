@@ -452,23 +452,13 @@ namespace AnimeChanger
                 notIcon.Visible = true;
                 Hide();
             }
-            else if (FormWindowState.Normal == WindowState)
-            {
-                notIcon.Visible = false;
-            }
         }
 
         private void notIcon_DoubleClick(object Sender, EventArgs e)
         {
-            // Show the form when the user double clicks on the notify icon.
-
-            // Set the WindowState to normal if the form is minimized.
-            if (this.WindowState == FormWindowState.Minimized)
-                this.WindowState = FormWindowState.Normal;
-
-            // Activate the form.
-            this.Activate();
             Show();
+            this.WindowState = FormWindowState.Normal;
+            notIcon.Visible = false;
         }
         #endregion
 
