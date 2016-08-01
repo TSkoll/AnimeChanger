@@ -163,13 +163,10 @@
     <None Include="Resources\ani.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\adasafa.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\appicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\pngmask.png" />
+    <None Include="Resources\noAni.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

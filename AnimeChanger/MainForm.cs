@@ -60,6 +60,11 @@ namespace AnimeChanger
         /// </summary>
         internal MalWrapper wrapper = new MalWrapper("animechangerbot", "iV6#mjlTIWln^&3f");
 
+        /// <summary>
+        /// Last api return from MyAnimeList.
+        /// </summary>
+        MalReturn lastTitleRet;
+
         private byte _retryInt = 0;
         #endregion
 
@@ -71,22 +76,6 @@ namespace AnimeChanger
 
             globalFilters = XML.GetGlobalFilters();
             webCache = XML.GetWebsiteFilters();
-
-            //pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(Properties.Resources.adasafa), 2.3, 12));
-
-            #region There's probably a better way of doing this but I'm too lazy
-            var pos = PointToScreen(lCurrent.Location);
-            pos = pCover.PointToClient(pos);
-            lCurrent.Parent = pCover;
-            lCurrent.Location = pos;
-            lCurrent.BackColor = System.Drawing.Color.Transparent;
-
-            pos = PointToScreen(lTitle.Location);
-            pos = pCover.PointToClient(pos);
-            lTitle.Parent = pCover;
-            lTitle.Location = pos;
-            lTitle.BackColor = System.Drawing.Color.Transparent;
-            #endregion
 
             #region system tray icon
             notIcon.Icon = Properties.Resources.appicon;
@@ -296,6 +285,9 @@ namespace AnimeChanger
                     {
                         ChangeGame(null);
                         lastTitle = null;
+
+                        lastTitleRet = null;
+                        pCover.Image = Properties.Resources.noAni;
                     }
 
                     _retryInt = 3;
@@ -318,8 +310,10 @@ namespace AnimeChanger
             {
                 ChangeGame(title);
 
-                //var dlCover = wrapper.GetAnimCoverTest(title);
-                //pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12));
+                var apiReturn = wrapper.GetMALTitle(title);
+                pCover.Image = apiReturn.Cover;
+
+                lastTitleRet = apiReturn;
             }
 
             lastTitle = title;
@@ -475,6 +469,14 @@ namespace AnimeChanger
             Show();
         }
         #endregion
+
+        private void pCover_DoubleClick(object sender, EventArgs e)
+        {
+            if (lastTitleRet != null)
+            {
+                Process.Start($"http://myanimelist.net/anime/{lastTitleRet.id}");
+            }
+        }
         #endregion
     }
 }

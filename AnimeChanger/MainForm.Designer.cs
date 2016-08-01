@@ -41,7 +41,7 @@
             // 
             this.lCurrent.AutoSize = true;
             this.lCurrent.BackColor = System.Drawing.Color.Transparent;
-            this.lCurrent.Location = new System.Drawing.Point(24, 28);
+            this.lCurrent.Location = new System.Drawing.Point(149, 30);
             this.lCurrent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lCurrent.Name = "lCurrent";
             this.lCurrent.Size = new System.Drawing.Size(117, 19);
@@ -56,10 +56,10 @@
             this.lTitle.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.lTitle.FontWeight = MetroFramework.MetroLabelWeight.Regular;
             this.lTitle.ForeColor = System.Drawing.SystemColors.Control;
-            this.lTitle.Location = new System.Drawing.Point(24, 47);
+            this.lTitle.Location = new System.Drawing.Point(149, 47);
             this.lTitle.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lTitle.Name = "lTitle";
-            this.lTitle.Size = new System.Drawing.Size(402, 104);
+            this.lTitle.Size = new System.Drawing.Size(280, 120);
             this.lTitle.TabIndex = 1;
             this.lTitle.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
             this.lTitle.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -69,7 +69,7 @@
             // 
             // bLogin
             // 
-            this.bLogin.Location = new System.Drawing.Point(21, 154);
+            this.bLogin.Location = new System.Drawing.Point(145, 170);
             this.bLogin.Name = "bLogin";
             this.bLogin.Size = new System.Drawing.Size(75, 23);
             this.bLogin.TabIndex = 2;
@@ -80,16 +80,19 @@
             // 
             // pCover
             // 
-            this.pCover.Location = new System.Drawing.Point(0, 26);
+            this.pCover.ErrorImage = global::AnimeChanger.Properties.Resources.noAni;
+            this.pCover.Image = global::AnimeChanger.Properties.Resources.noAni;
+            this.pCover.Location = new System.Drawing.Point(0, 5);
             this.pCover.Name = "pCover";
-            this.pCover.Size = new System.Drawing.Size(450, 174);
-            this.pCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pCover.Size = new System.Drawing.Size(140, 195);
+            this.pCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pCover.TabIndex = 3;
             this.pCover.TabStop = false;
+            this.pCover.DoubleClick += new System.EventHandler(this.pCover_DoubleClick);
             // 
             // bMal
             // 
-            this.bMal.Location = new System.Drawing.Point(297, 154);
+            this.bMal.Location = new System.Drawing.Point(297, 170);
             this.bMal.Name = "bMal";
             this.bMal.Size = new System.Drawing.Size(132, 23);
             this.bMal.TabIndex = 4;

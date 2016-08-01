@@ -103,6 +103,26 @@ namespace AnimeChanger.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap jpgmask {
+            get {
+                object obj = ResourceManager.GetObject("jpgmask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap noAni {
+            get {
+                object obj = ResourceManager.GetObject("noAni", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pngmask {
             get {
                 object obj = ResourceManager.GetObject("pngmask", resourceCulture);

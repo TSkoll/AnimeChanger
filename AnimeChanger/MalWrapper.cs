@@ -52,8 +52,10 @@ namespace AnimeChanger
             return img;
         }
 
-        public Bitmap GetAnimCoverTest(string title)
+        public MalReturn GetMALTitle(string title)
         {
+            MalReturn ret = new MalReturn();
+
             title = title.ToLower();
             var request = new RestRequest("anime/search.xml", Method.GET);
             if (title.Contains("episode"))
@@ -72,8 +74,18 @@ namespace AnimeChanger
 
             using (MemoryStream memstream = new MemoryStream(bytes))
             {
-                return new Bitmap(memstream);
+                ret.Cover = new Bitmap(memstream);
             }
+
+            ret.id = xml.SelectSingleNode("anime/entry/id").InnerText;
+
+            return ret;
         }
+    }
+
+    public class MalReturn
+    {
+        public Bitmap Cover { get; set; }
+        public string id { get; set; }
     }
 }

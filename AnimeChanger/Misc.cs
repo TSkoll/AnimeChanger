@@ -96,7 +96,7 @@ namespace AnimeChanger
         /// <param name="sigma">Sigma value.</param>
         /// <param name="size">Kernel size</param>
         /// <returns>Blurred bitmap</returns>
-        internal static Bitmap BlurBitmap(Bitmap source, double sigma, int size)
+        private static Bitmap BlurBitmap(Bitmap source, double sigma, int size)
         {
             GaussianBlur filter = new GaussianBlur(sigma, size);
             return filter.Apply(source);
@@ -107,7 +107,7 @@ namespace AnimeChanger
         /// </summary>
         /// <param name="source">Source image which is cropped.</param>
         /// <returns>Cropped image.</returns>
-        internal static Bitmap CropBitmap(Bitmap source)
+        private static Bitmap CropBitmap(Bitmap source)
         {
             Random r = new Random();
             int pos = r.Next(0, source.Height - 174);
@@ -124,7 +124,7 @@ namespace AnimeChanger
         /// <param name="BrightnessAmount">Amount [-255, 255], negative values darken and positive values brighten the image</param>
         /// <param name="ContrastAmount">Amount [-255, 255]</param>
         /// <returns>Bitmap with brightness altered</returns>
-        internal static Bitmap ChangeBitmapBrightness(Bitmap source, int BrightnessAmount, int ContrastAmount)
+        private static Bitmap ChangeBitmapBrightness(Bitmap source, int BrightnessAmount, int ContrastAmount)
         {
             BrightnessCorrection filter = new BrightnessCorrection(BrightnessAmount);
             ContrastCorrection filter2 = new ContrastCorrection(ContrastAmount);
@@ -132,12 +132,25 @@ namespace AnimeChanger
             return filter2.Apply(filter.Apply(source));
         }
 
-        internal static Bitmap testBrightness(Bitmap source)
+        private static Bitmap testBrightness(Bitmap source)
         {
-            Subtract filter = new Subtract(Properties.Resources.pngmask);
+            Subtract filter = new Subtract(Properties.Resources.jpgmask);
             return filter.Apply(source);
         }
 
+
+        internal static Bitmap processImage(Bitmap source, double sigma, int size)
+        {
+            Bitmap overlay = Properties.Resources.jpgmask;
+            ResizeBilinear overFilter = new ResizeBilinear(source.Width, 174);
+
+            Bitmap CorSizeOverlay = overFilter.Apply(overlay);
+
+            Subtract filter = new Subtract(CorSizeOverlay);
+
+            return filter.Apply(BlurBitmap(CropBitmap(source), sigma, size));
+
+        }
         #endregion
     }
 }
