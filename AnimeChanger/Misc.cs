@@ -3,8 +3,6 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
-using System.Drawing;
-using AForge.Imaging.Filters;
 
 namespace AnimeChanger
 {
