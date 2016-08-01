@@ -97,6 +97,8 @@ namespace AnimeChanger
             notIcon.Text = "AnimeChanger";
             notIcon.Visible = false;
             #endregion
+
+            bMal.Hide();
         }
 
         #region Discord.net

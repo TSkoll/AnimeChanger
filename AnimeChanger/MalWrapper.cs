@@ -25,33 +25,6 @@ namespace AnimeChanger
             client.Authenticator = new HttpBasicAuthenticator(username, password);
         }
 
-        [Obsolete("Doesn't work, user GetAnimCoverTest() instead", true)]
-        public async Task<Bitmap> GetAnimeCover(string title)
-        {
-            var request = new RestRequest("anime/search.xml", Method.GET);
-            request.AddParameter("q", title);
-            request.RootElement = "anime";
-
-            var resp = await client.ExecuteTaskAsync(request);
-
-            XmlDocument xml = new XmlDocument();
-            xml.LoadXml(resp.Content);
-            var url = (xml.SelectSingleNode("anime/entry/image").InnerText);
-
-            Bitmap img = null;
-            dlClient.DownloadDataCompleted += (s, e) =>
-            {
-                if (!e.Cancelled)
-                    using (MemoryStream memstream = new MemoryStream(e.Result))
-                    {
-                        img = new Bitmap(memstream);
-                    }
-            };
-            dlClient.DownloadDataAsync(new Uri(url));
-
-            return img;
-        }
-
         public MalReturn GetMALTitle(string title)
         {
             MalReturn ret = new MalReturn();

@@ -92,6 +92,7 @@
             // 
             // bMal
             // 
+            this.bMal.Enabled = false;
             this.bMal.Location = new System.Drawing.Point(297, 170);
             this.bMal.Name = "bMal";
             this.bMal.Size = new System.Drawing.Size(132, 23);
