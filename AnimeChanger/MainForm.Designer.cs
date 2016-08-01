@@ -28,77 +28,116 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.TitleBox = new System.Windows.Forms.MaskedTextBox();
-            this.RefreshBtn = new System.Windows.Forms.Button();
-            this.StatusLabel = new System.Windows.Forms.Label();
-            this.LoginBtn = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.lCurrent = new MetroFramework.Controls.MetroLabel();
+            this.lTitle = new MetroFramework.Controls.MetroLabel();
+            this.bLogin = new MetroFramework.Controls.MetroButton();
+            this.pCover = new System.Windows.Forms.PictureBox();
+            this.bMal = new MetroFramework.Controls.MetroButton();
+            ((System.ComponentModel.ISupportInitialize)(this.pCover)).BeginInit();
             this.SuspendLayout();
             // 
-            // TitleBox
+            // lCurrent
             // 
-            this.TitleBox.Enabled = false;
-            this.TitleBox.Location = new System.Drawing.Point(12, 12);
-            this.TitleBox.Name = "TitleBox";
-            this.TitleBox.Size = new System.Drawing.Size(260, 20);
-            this.TitleBox.TabIndex = 0;
+            this.lCurrent.AutoSize = true;
+            this.lCurrent.BackColor = System.Drawing.Color.Transparent;
+            this.lCurrent.Location = new System.Drawing.Point(149, 30);
+            this.lCurrent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lCurrent.Name = "lCurrent";
+            this.lCurrent.Size = new System.Drawing.Size(117, 19);
+            this.lCurrent.TabIndex = 0;
+            this.lCurrent.Text = "Currently watching";
+            this.lCurrent.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lCurrent.UseCustomBackColor = true;
             // 
-            // RefreshBtn
+            // lTitle
             // 
-            this.RefreshBtn.Location = new System.Drawing.Point(12, 38);
-            this.RefreshBtn.Name = "RefreshBtn";
-            this.RefreshBtn.Size = new System.Drawing.Size(81, 20);
-            this.RefreshBtn.TabIndex = 2;
-            this.RefreshBtn.Text = "Refresh";
-            this.RefreshBtn.UseVisualStyleBackColor = true;
-            this.RefreshBtn.Click += new System.EventHandler(this.RefreshBtn_Click);
+            this.lTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lTitle.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.lTitle.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.lTitle.ForeColor = System.Drawing.SystemColors.Control;
+            this.lTitle.Location = new System.Drawing.Point(149, 47);
+            this.lTitle.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lTitle.Name = "lTitle";
+            this.lTitle.Size = new System.Drawing.Size(280, 120);
+            this.lTitle.TabIndex = 1;
+            this.lTitle.Text = "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。";
+            this.lTitle.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.lTitle.UseCustomBackColor = true;
+            this.lTitle.UseCustomForeColor = true;
+            this.lTitle.WrapToLine = true;
             // 
-            // StatusLabel
+            // bLogin
             // 
-            this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(211, 42);
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(61, 13);
-            this.StatusLabel.TabIndex = 3;
-            this.StatusLabel.Text = "Logged out";
+            this.bLogin.Location = new System.Drawing.Point(145, 170);
+            this.bLogin.Name = "bLogin";
+            this.bLogin.Size = new System.Drawing.Size(75, 23);
+            this.bLogin.TabIndex = 2;
+            this.bLogin.Text = "Log in";
+            this.bLogin.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.bLogin.UseSelectable = true;
+            this.bLogin.Click += new System.EventHandler(this.bLogin_Click);
             // 
-            // LoginBtn
+            // pCover
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(99, 38);
-            this.LoginBtn.Name = "LoginBtn";
-            this.LoginBtn.Size = new System.Drawing.Size(81, 20);
-            this.LoginBtn.TabIndex = 4;
-            this.LoginBtn.Text = "Log in";
-            this.LoginBtn.UseVisualStyleBackColor = true;
-            this.LoginBtn.Click += new System.EventHandler(this.LoginBtn_Click);
+            this.pCover.ErrorImage = global::AnimeChanger.Properties.Resources.noAni;
+            this.pCover.Image = global::AnimeChanger.Properties.Resources.noAni;
+            this.pCover.Location = new System.Drawing.Point(0, 5);
+            this.pCover.Name = "pCover";
+            this.pCover.Size = new System.Drawing.Size(140, 195);
+            this.pCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pCover.TabIndex = 3;
+            this.pCover.TabStop = false;
+            this.pCover.DoubleClick += new System.EventHandler(this.pCover_DoubleClick);
+            // 
+            // bMal
+            // 
+            this.bMal.Enabled = false;
+            this.bMal.Location = new System.Drawing.Point(297, 170);
+            this.bMal.Name = "bMal";
+            this.bMal.Size = new System.Drawing.Size(132, 23);
+            this.bMal.TabIndex = 4;
+            this.bMal.Text = "Connect with MAL";
+            this.bMal.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.bMal.UseSelectable = true;
+            this.bMal.Click += new System.EventHandler(this.bMal_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 67);
-            this.Controls.Add(this.LoginBtn);
-            this.Controls.Add(this.StatusLabel);
-            this.Controls.Add(this.RefreshBtn);
-            this.Controls.Add(this.TitleBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(450, 200);
+            this.Controls.Add(this.bMal);
+            this.Controls.Add(this.bLogin);
+            this.Controls.Add(this.lTitle);
+            this.Controls.Add(this.lCurrent);
+            this.Controls.Add(this.pCover);
+            this.DisplayHeader = false;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(300, 106);
-            this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(300, 106);
             this.Name = "MainForm";
-            this.ShowIcon = false;
+            this.Padding = new System.Windows.Forms.Padding(18, 30, 18, 20);
+            this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.None;
+            this.Style = MetroFramework.MetroColorStyle.Magenta;
             this.Text = "AnimeChanger";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_Closing);
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.pCover)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button RefreshBtn;
-        internal System.Windows.Forms.Label StatusLabel;
-        internal System.Windows.Forms.MaskedTextBox TitleBox;
-        private System.Windows.Forms.Button LoginBtn;
+
+        private MetroFramework.Controls.MetroLabel lCurrent;
+        private MetroFramework.Controls.MetroLabel lTitle;
+        private MetroFramework.Controls.MetroButton bLogin;
+        private System.Windows.Forms.PictureBox pCover;
+        private MetroFramework.Controls.MetroButton bMal;
     }
 }
-

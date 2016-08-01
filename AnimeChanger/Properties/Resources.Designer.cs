@@ -62,17 +62,41 @@ namespace AnimeChanger.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Root&gt;
-        ///	&lt;GlobalFilters /&gt;
-        ///	&lt;WebsiteFilters&gt;
-        ///		&lt;Website Keyword=&quot;crunchyroll - watch&quot;&gt;
-        ///			&lt;Filter&gt;Crunchyroll - Watch &lt;/Filter&gt;
-        ///		&lt;/Website&gt;
-        ///	&lt;/WebsiteFilters&gt;
+        ///  &lt;GlobalFilters /&gt;
+        ///  &lt;WebsiteFilters&gt;
+        ///    &lt;Website Keyword=&quot;crunchyroll - watch&quot; Blacklist=&quot;Anime videos and Episodes&quot;&gt;
+        ///      &lt;Filter&gt;Crunchyroll - Watch &lt;/Filter&gt;
+        ///    &lt;/Website&gt;
+        ///    &lt;Website Keyword=&quot;online in high quality&quot;&gt;
+        ///      &lt;Filter&gt;online in high quality&lt;/Filter&gt;
+        ///      &lt;Filter&gt; - Watch &lt;/Filter&gt;
+        ///    &lt;/Website&gt;
+        ///  &lt;/WebsiteFilters&gt;
         ///&lt;/Root&gt;.
         /// </summary>
         internal static string ani {
             get {
                 return ResourceManager.GetString("ani", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon appicon {
+            get {
+                object obj = ResourceManager.GetObject("appicon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap noAni {
+            get {
+                object obj = ResourceManager.GetObject("noAni", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
