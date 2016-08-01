@@ -322,7 +322,7 @@ namespace AnimeChanger
                 ChangeGame(title);
 
                 var dlCover = wrapper.GetAnimCoverTest(title);
-                pCover.Image = Misc.ChangeBitmapBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12), -140, -10);
+                pCover.Image = Misc.testBrightness(Misc.BlurBitmap(Misc.CropBitmap(dlCover), 2.3, 12));
             }
 
             lastTitle = title;

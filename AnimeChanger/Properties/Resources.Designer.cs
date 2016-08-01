@@ -74,7 +74,7 @@ namespace AnimeChanger.Properties {
         ///   Looks up a localized string similar to &lt;Root&gt;
         ///  &lt;GlobalFilters /&gt;
         ///  &lt;WebsiteFilters&gt;
-        ///    &lt;Website Keyword=&quot;crunchyroll - watch&quot;&gt;
+        ///    &lt;Website Keyword=&quot;crunchyroll - watch&quot; Blacklist=&quot;Anime videos and Episodes&quot;&gt;
         ///      &lt;Filter&gt;Crunchyroll - Watch &lt;/Filter&gt;
         ///    &lt;/Website&gt;
         ///    &lt;Website Keyword=&quot;online in high quality&quot;&gt;
@@ -97,6 +97,16 @@ namespace AnimeChanger.Properties {
             get {
                 object obj = ResourceManager.GetObject("appicon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pngmask {
+            get {
+                object obj = ResourceManager.GetObject("pngmask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

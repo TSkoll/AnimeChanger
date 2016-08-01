@@ -131,6 +131,13 @@ namespace AnimeChanger
 
             return filter2.Apply(filter.Apply(source));
         }
+
+        internal static Bitmap testBrightness(Bitmap source)
+        {
+            Add filter = new Add(Properties.Resources.pngmask);
+            return filter.Apply(source);
+        }
+
         #endregion
     }
 }
