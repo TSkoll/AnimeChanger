@@ -38,7 +38,7 @@ namespace AnimeChanger
 
             var resp = client.Execute(request);
 
-            File.WriteAllText(@"C:\DKBot\resp.xml", resp.Content);
+            File.WriteAllText(Path.Combine(Misc.FolderPath, "resp.xml"), resp.Content);
 
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(resp.Content);
