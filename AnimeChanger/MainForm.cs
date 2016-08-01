@@ -338,8 +338,17 @@ namespace AnimeChanger
         {
             lTitle.Invoke((MethodInvoker)delegate
             {
-                lTitle.Text = "Currently watching: " + (text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。");
-                notIcon.Text = "Currently watching: " + (text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。");
+                lTitle.Text = (text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。");
+
+                var titleText = "Currently watching: " + (text ?? "nothing ヾ(｡>﹏<｡)ﾉﾞ✧*。");
+
+                string IconText;
+                if (titleText.Length >= 64)
+                    IconText = titleText.Remove(60) + "...";
+                else
+                    IconText = titleText;
+
+                notIcon.Text = IconText;
             });
             client.SetGame(text);
         }
