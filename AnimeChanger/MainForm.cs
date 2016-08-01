@@ -77,6 +77,17 @@ namespace AnimeChanger
             globalFilters = XML.GetGlobalFilters();
             webCache = XML.GetWebsiteFilters();
 
+            #region Global error catching
+            Application.ThreadException += (s, e) =>
+            {
+                if (client != null)
+                {
+                    ChangeGame(null);
+                    client.Disconnect();
+                }
+            };
+            #endregion
+
             #region system tray icon
             notIcon.Icon = Properties.Resources.appicon;
             notIcon.DoubleClick += new EventHandler(notIcon_DoubleClick);
