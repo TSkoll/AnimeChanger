@@ -43,6 +43,9 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\appicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discord.Net, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discord.Net.0.9.4\lib\net45\Discord.Net.dll</HintPath>
