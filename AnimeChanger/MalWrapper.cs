@@ -29,7 +29,6 @@ namespace AnimeChanger
         public async Task<Bitmap> GetAnimeCover(string title)
         {
             var request = new RestRequest("anime/search.xml", Method.GET);
-            title = title.Replace(" ", "+");
             request.AddParameter("q", title);
             request.RootElement = "anime";
 
@@ -55,8 +54,10 @@ namespace AnimeChanger
 
         public Bitmap GetAnimCoverTest(string title)
         {
+            title = title.ToLower();
             var request = new RestRequest("anime/search.xml", Method.GET);
-            title = title.Replace(" ", "+");
+            if (title.Contains("episode"))
+                title = title.Remove(title.IndexOf(" episode"));
             request.AddParameter("q", title);
             request.RootElement = "anime";
 
