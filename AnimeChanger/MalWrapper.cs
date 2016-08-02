@@ -40,7 +40,7 @@ namespace AnimeChanger
 
                 var resp = client.Execute(request);
 
-                if (string.IsNullOrEmpty(resp))
+                if (string.IsNullOrEmpty(resp.Content))
                     return null;
 
                 XmlDocument xml = new XmlDocument();
