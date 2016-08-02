@@ -20,14 +20,10 @@ namespace AnimeChanger
     {
         #region Variables
 
-        /// <summary>
-        /// System tray icon.
-        /// </summary>
+        /// <summary>System tray icon.</summary>
         NotifyIcon notIcon = new NotifyIcon();
 
-        /// <summary>
-        /// List of supported browsers.
-        /// </summary>
+        /// <summary>List of supported browsers.</summary>
         public Browser[] supportedBrowsers =
         {
             new Browser { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } },
@@ -35,34 +31,22 @@ namespace AnimeChanger
             new Browser { ProcessName = "waterfox", RemoveBrowserTitles = new string[] { " - Waterfox" } },
         };
 
-        /// <summary>
-        /// Last found title
-        /// </summary>
+        /// <summary>Last found title</summary>
         public string lastTitle = null;
 
-        /// <summary>
-        /// An array of global filters.
-        /// </summary>
+        /// <summary>An array of global filters.</summary>
         public Filter[] globalFilters;
 
-        /// <summary>
-        /// An array of website filters.
-        /// </summary>
+        /// <summary>An array of website filters.</summary>
         public Website[] webCache;
 
-        /// <summary>
-        /// Used for disconnecting from main thread.
-        /// </summary>
+        /// <summary>Used for disconnecting from main thread.</summary>
         internal DiscordClient client;
 
-        /// <summary>
-        /// Used for calling MAL api.
-        /// </summary>
+        /// <summary>Used for calling MAL api.</summary>
         internal MalWrapper wrapper = new MalWrapper("animechangerbot", "iV6#mjlTIWln^&3f");
 
-        /// <summary>
-        /// Last api return from MyAnimeList.
-        /// </summary>
+        /// <summary>Last api return from MyAnimeList.</summary>
         MalReturn lastTitleRet;
 
         private byte _retryInt = 0;
@@ -88,7 +72,7 @@ namespace AnimeChanger
             };
             #endregion
 
-            #region system tray icon
+            #region System tray icon
             notIcon.Icon = Properties.Resources.appicon;
             notIcon.DoubleClick += new EventHandler(notIcon_DoubleClick);
 

@@ -41,7 +41,7 @@
             // 
             this.lCurrent.AutoSize = true;
             this.lCurrent.BackColor = System.Drawing.Color.Transparent;
-            this.lCurrent.Location = new System.Drawing.Point(149, 30);
+            this.lCurrent.Location = new System.Drawing.Point(149, 29);
             this.lCurrent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lCurrent.Name = "lCurrent";
             this.lCurrent.Size = new System.Drawing.Size(117, 19);
