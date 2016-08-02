@@ -308,9 +308,18 @@ namespace AnimeChanger
                 ChangeGame(title);
 
                 var apiReturn = wrapper.GetMALTitle(title);
-                pCover.Image = apiReturn.Cover;
 
-                lastTitleRet = apiReturn;
+                if (apiReturn != null)
+                {
+                    pCover.Image = apiReturn.Cover;
+                    lastTitleRet = apiReturn;
+                }
+                else
+                {
+                    pCover.Image = Properties.Resources.noAni;
+                    lastTitleRet = null;
+                }
+
             }
 
             lastTitle = title;

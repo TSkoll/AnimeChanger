@@ -27,32 +27,40 @@ namespace AnimeChanger
 
         public MalReturn GetMALTitle(string title)
         {
-            MalReturn ret = new MalReturn();
-
-            title = title.ToLower();
-            var request = new RestRequest("anime/search.xml", Method.GET);
-            if (title.Contains("episode"))
-                title = title.Remove(title.IndexOf(" episode"));
-            request.AddParameter("q", title);
-            request.RootElement = "anime";
-
-            var resp = client.Execute(request);
-
-            File.WriteAllText(Path.Combine(Misc.FolderPath, "resp.xml"), resp.Content);
-
-            XmlDocument xml = new XmlDocument();
-            xml.LoadXml(resp.Content);
-
-            byte[] bytes = dlClient.DownloadData(new Uri(xml.SelectSingleNode("anime/entry/image").InnerText));
-
-            using (MemoryStream memstream = new MemoryStream(bytes))
+            try
             {
-                ret.Cover = new Bitmap(memstream);
+                MalReturn ret = new MalReturn();
+
+                title = title.ToLower();
+                var request = new RestRequest("anime/search.xml", Method.GET);
+                if (title.Contains("episode"))
+                    title = title.Remove(title.IndexOf(" episode"));
+                request.AddParameter("q", title);
+                request.RootElement = "anime";
+
+                var resp = client.Execute(request);
+
+                if (string.IsNullOrEmpty(resp))
+                    return null;
+
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(resp.Content);
+
+                byte[] bytes = dlClient.DownloadData(new Uri(xml.SelectSingleNode("anime/entry/image").InnerText));
+
+                using (MemoryStream memstream = new MemoryStream(bytes))
+                {
+                    ret.Cover = new Bitmap(memstream);
+                }
+
+                ret.id = xml.SelectSingleNode("anime/entry/id").InnerText;
+
+                return ret;
             }
-
-            ret.id = xml.SelectSingleNode("anime/entry/id").InnerText;
-
-            return ret;
+            catch
+            {
+                return null;
+            }
         }
     }
 
