@@ -34,6 +34,7 @@
             this.bLogin = new MetroFramework.Controls.MetroButton();
             this.pCover = new System.Windows.Forms.PictureBox();
             this.bMal = new MetroFramework.Controls.MetroButton();
+            this.lHint = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pCover)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +70,7 @@
             // 
             // bLogin
             // 
-            this.bLogin.Location = new System.Drawing.Point(145, 170);
+            this.bLogin.Location = new System.Drawing.Point(149, 170);
             this.bLogin.Name = "bLogin";
             this.bLogin.Size = new System.Drawing.Size(75, 23);
             this.bLogin.TabIndex = 2;
@@ -102,11 +103,23 @@
             this.bMal.UseSelectable = true;
             this.bMal.Click += new System.EventHandler(this.bMal_Click);
             // 
+            // lHint
+            // 
+            this.lHint.AutoSize = true;
+            this.lHint.FontSize = MetroFramework.MetroLabelSize.Small;
+            this.lHint.Location = new System.Drawing.Point(149, 74);
+            this.lHint.Name = "lHint";
+            this.lHint.Size = new System.Drawing.Size(81, 15);
+            this.lHint.TabIndex = 5;
+            this.lHint.Text = "(log in to start)";
+            this.lHint.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 200);
+            this.Controls.Add(this.lHint);
             this.Controls.Add(this.bMal);
             this.Controls.Add(this.bLogin);
             this.Controls.Add(this.lTitle);
@@ -139,5 +152,6 @@
         private MetroFramework.Controls.MetroButton bLogin;
         private System.Windows.Forms.PictureBox pCover;
         private MetroFramework.Controls.MetroButton bMal;
+        private MetroFramework.Controls.MetroLabel lHint;
     }
 }

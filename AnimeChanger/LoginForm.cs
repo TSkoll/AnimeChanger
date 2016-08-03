@@ -12,6 +12,9 @@ namespace AnimeChanger
         {
             _target = target;
             InitializeComponent();
+
+            if (_target == "discord")
+                lHint.Text = "Login with your Discord info:";
         }
 
         private void bLogin_Click(object sender, EventArgs e)

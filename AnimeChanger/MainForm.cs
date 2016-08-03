@@ -114,13 +114,15 @@ namespace AnimeChanger
                     client.ExecuteAndWait(async () =>
                     {
                         await client.Connect(buffer.id, buffer.pass);
-                        TimerCheck();
 
                         bLogin.Invoke((MethodInvoker)delegate ()
                         {
                             bLogin.Enabled = false;
                             bLogin.Text = "Logged in";
+                            lHint.Hide();
                         });
+                        
+                        TimerCheck();
 
                         CheckTimer.Elapsed += (s1, e1) => TimerCheck();
                         CheckTimer.Start();
@@ -129,9 +131,9 @@ namespace AnimeChanger
                 catch (Discord.Net.HttpException ex)
                 {
                     MessageBox.Show(string.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
-                    if (File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+                    if (File.Exists(Path.Combine(Misc.FolderPath, "discord.xml")))
                     {
-                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                        File.Delete(Path.Combine(Misc.FolderPath, "discord.xml"));
                     }
                     RetryLogin();
                 }
@@ -313,11 +315,13 @@ namespace AnimeChanger
                 {
                     pCover.Image = apiReturn.Cover;
                     lastTitleRet = apiReturn;
+                    pCover.MouseHover += pCover_MouseHover;
                 }
                 else
                 {
                     pCover.Image = Properties.Resources.noAni;
                     lastTitleRet = null;
+                    pCover.MouseHover -= pCover_MouseHover;
                 }
 
             }
@@ -371,6 +375,7 @@ namespace AnimeChanger
         #endregion
 
         #region Events
+        #region Log in/out
         private void bLogin_Click(object sender, EventArgs e)
         {
             Secrets buffer = null;
@@ -457,8 +462,9 @@ namespace AnimeChanger
                 client.Disconnect();
             }
         }
+        #endregion
 
-        #region minimization
+        #region Minimization
         private void MainForm_Resize(object sender, EventArgs e)
         {
             if (FormWindowState.Minimized == WindowState)
@@ -476,6 +482,7 @@ namespace AnimeChanger
         }
         #endregion
 
+        #region Anime cover
         private void pCover_DoubleClick(object sender, EventArgs e)
         {
             if (lastTitleRet != null)
@@ -483,6 +490,13 @@ namespace AnimeChanger
                 Process.Start($"http://myanimelist.net/anime/{lastTitleRet.id}");
             }
         }
+
+        private void pCover_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.pCover, "Double-click to open MAL page.");
+        }
+        #endregion
         #endregion
     }
 }
