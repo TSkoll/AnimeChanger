@@ -129,9 +129,9 @@ namespace AnimeChanger
                 catch (Discord.Net.HttpException ex)
                 {
                     MessageBox.Show(string.Format("(Error: {0})\nCouldn't connect to Discord. Make sure you enter the correct email and password.", ex.GetType().ToString()), "Error");
-                    if (File.Exists(Path.Combine(Misc.FolderPath, "secrets.xml")))
+                    if (File.Exists(Path.Combine(Misc.FolderPath, "discord.xml")))
                     {
-                        File.Delete(Path.Combine(Misc.FolderPath, "secrets.xml"));
+                        File.Delete(Path.Combine(Misc.FolderPath, "discord.xml"));
                     }
                     RetryLogin();
                 }
