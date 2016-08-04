@@ -4,7 +4,7 @@
     <Website Keyword="crunchyroll - watch" Blacklist="Anime videos and Episodes">
       <Filter>Crunchyroll - Watch </Filter>
     </Website>
-    <Website Keyword="online in high quality">
+    <Website Keyword="online in high quality" Blacklist="KissAnime - Watch anime online in high quality">
       <Filter>online in high quality</Filter>
       <Filter> - Watch </Filter>
     </Website>
