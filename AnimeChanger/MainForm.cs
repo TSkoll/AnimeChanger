@@ -24,11 +24,16 @@ namespace AnimeChanger
         NotifyIcon notIcon = new NotifyIcon();
 
         /// <summary>List of supported browsers.</summary>
-        public Browser[] supportedBrowsers =
+        public BrowserOLD[] supportedBrowsers =
         {
-            new Browser { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } },
-            new Browser { ProcessName = "firefox", RemoveBrowserTitles = new string[] { " - Mozilla Firefox", " - Firefox Developer Edition" } },
-            new Browser { ProcessName = "waterfox", RemoveBrowserTitles = new string[] { " - Waterfox" } },
+            new BrowserOLD { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } },
+            new BrowserOLD { ProcessName = "firefox", RemoveBrowserTitles = new string[] { " - Mozilla Firefox", " - Firefox Developer Edition" } },
+            new BrowserOLD { ProcessName = "waterfox", RemoveBrowserTitles = new string[] { " - Waterfox" } },
+        };
+
+        public Browser.Browser[] supportedBrowsersNew =
+        {
+            new Browser.Supported.Chrome { ProcessName = "chrome", RemoveBrowserTitles = new string[] { " - Google Chrome" } }
         };
 
         /// <summary>Last found title</summary>
@@ -161,7 +166,7 @@ namespace AnimeChanger
         /// </summary>
         /// <param name="Processes">System.Tuple of Browser and Process, browser processes currently running.</param>
         /// <returns>System.Tuple of Browser, Process, Website; Everything you can gather from scraping a thread.</returns>
-        public Tuple<Browser, Process, Website> GetKeywordProcess(Tuple<Browser, Process>[] Processes)
+        public Tuple<BrowserOLD, Process, Website> GetKeywordProcess(Tuple<BrowserOLD, Process>[] Processes)
         {
             foreach (var pair in Processes)
             {
@@ -172,7 +177,7 @@ namespace AnimeChanger
                             continue;
 
                     if (pair.Item2.MainWindowTitle.ToLower().Contains(w.Keyword))
-                        return new Tuple<Browser, Process, Website>(pair.Item1, pair.Item2, w);
+                        return new Tuple<BrowserOLD, Process, Website>(pair.Item1, pair.Item2, w);
                 }
             }
             return null;
@@ -182,18 +187,18 @@ namespace AnimeChanger
         /// Gets browser processes running currently on the system
         /// </summary>
         /// <returns>An array of System.Tuple of Browser and Process, every browser process running on the system</returns>
-        public Tuple<Browser, Process>[] GetBrowserProcesses()
+        public Tuple<BrowserOLD, Process>[] GetBrowserProcesses()
         {
             Process[] processes = Process.GetProcesses();
 
-            List<Tuple<Browser, Process>> ret = new List<Tuple<Browser, Process>>();
+            List<Tuple<BrowserOLD, Process>> ret = new List<Tuple<BrowserOLD, Process>>();
 
             foreach (var b in supportedBrowsers)
             {
                 foreach (var p in processes)
                 {
                     if (p.ProcessName.Contains(b.ProcessName))
-                        ret.Add(new Tuple<Browser, Process>(b, p));
+                        ret.Add(new Tuple<BrowserOLD, Process>(b, p));
                 }
             }
 
@@ -211,7 +216,7 @@ namespace AnimeChanger
         /// <param name="usedBrowser">AnimeChanger.Browser, browser thread where the title was gathered</param>
         /// <param name="usedSite">AnimeChanger.Website, website where the anime is being watched</param>
         /// <returns>System.String, parsed string</returns>
-        public string RemoveWebString(string fullTitle, Browser usedBrowser, Website usedSite)
+        public string RemoveWebString(string fullTitle, BrowserOLD usedBrowser, Website usedSite)
         {
             var retString = fullTitle;
             foreach (string s in usedBrowser.RemoveBrowserTitles)
@@ -301,6 +306,9 @@ namespace AnimeChanger
             {
                 _retryInt = 0;
             }
+
+            var b = GetNewBrowserType(rightProcess.Item1);
+            MessageBox.Show($"Url: {b.getURL(rightProcess.Item2)}");
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
 
@@ -499,6 +507,19 @@ namespace AnimeChanger
             tt.SetToolTip(this.pCover, "Double-click to open MAL page.");
         }
         #endregion
+        #endregion
+
+        #region testing
+        private Browser.Browser GetNewBrowserType(BrowserOLD browser)
+        {
+            foreach (Browser.Browser b in supportedBrowsersNew)
+            {
+                if (browser.ProcessName == b.ProcessName)
+                    return b;
+            }
+
+            return null;
+        }
         #endregion
     }
 }
