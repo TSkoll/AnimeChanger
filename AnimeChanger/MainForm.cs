@@ -287,6 +287,8 @@ namespace AnimeChanger
 
                         lastTitleRet = null;
                         pCover.Image = Properties.Resources.noAni;
+
+                        pCover.MouseHover -= pCover_MouseHover;
                     }
 
                     _retryInt = 3;
