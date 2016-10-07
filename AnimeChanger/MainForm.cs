@@ -54,6 +54,7 @@ namespace AnimeChanger
         /// <summary>Last api return from MyAnimeList.</summary>
         MalReturn lastTitleRet;
 
+        private byte _statusChanges = 0;
         private byte _retryInt = 0;
         #endregion
 
@@ -308,7 +309,6 @@ namespace AnimeChanger
             }
 
             var b = GetNewBrowserType(rightProcess.Item1);
-            MessageBox.Show($"Url: {b.getURL(rightProcess.Item2)}");
 
             var title = RemoveWebString(rightProcess.Item2.MainWindowTitle, rightProcess.Item1, rightProcess.Item3);
 
@@ -487,7 +487,7 @@ namespace AnimeChanger
         private void notIcon_DoubleClick(object Sender, EventArgs e)
         {
             Show();
-            this.WindowState = FormWindowState.Normal;
+            WindowState = FormWindowState.Normal;
             notIcon.Visible = false;
         }
         #endregion
@@ -504,7 +504,7 @@ namespace AnimeChanger
         private void pCover_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.pCover, "Double-click to open MAL page.");
+            tt.SetToolTip(pCover, "Double-click to open MAL page.");
         }
         #endregion
         #endregion
